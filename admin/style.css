@@ -1,0 +1,205 @@
+*{
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+body {background-image: url(images/money.jpg);
+	background-repeat: repeat;}
+fieldset{background-color: white;
+	border: none;
+	border-radius: 10px;}
+
+.dateReminder{ background-color: white;
+	border: 3px solid black;
+	padding: 10px 10px 10px 10px;
+	border-radius: 10px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;}
+
+.searchBox{
+	background-color: rgba(15, 17, 14, 0.8);
+	border: none;
+	color:white;
+	width: 325px;
+	height: 37px;
+	margin: 5px;
+	padding-left: 5px;
+	border-radius: 10px;
+	border:1px solid white;
+}
+
+#searchInput{
+	background-color: rgba(15, 17, 14, 0.8);
+	border: none;
+	color:white;
+	width: 325px;
+	height: 37px;
+	margin: 5px;
+	padding-left: 5px;
+	border-radius: 10px;
+	border-top:1px solid white;
+	border-left:1px solid white;
+	border-bottom: 1px solid white;
+	position: absolute;
+	top: 100px;
+	left: 20px;
+	z-index: 1;}
+#searchButton{
+	background-color:transparent; 
+	position:absolute;
+	top:13px;
+	left:300px;
+	height: 35px;
+	border-radius: 10px;
+	border-top:1px solid white;
+	border-right:1px solid white;
+	border-bottom: 1px solid white;
+	position: absolute;
+	top: 105px;
+	left: 312px;
+	z-index: 2;
+}
+#clearSearch{
+	background-color: rgba(15, 17, 14, 0.8);
+	position:absolute;
+	padding: 8px 15px 8px 15px;
+	text-decoration: none;
+	color: white;
+	top:100px;
+	left:375px;
+	border-radius: 10px;
+	border:1px solid white;
+
+}
+#clearExpired{
+	background-color: rgba(15, 17, 14, 0.8);
+	position:absolute;
+	padding: 8px 15px 8px 15px;
+	text-decoration: none;
+	color: white;
+	top:100px;
+	right:5%;
+	border-radius: 10px;
+	border:1px solid white;
+	z-index: 99;
+}
+
+table {width: 90%;
+	background-color: white;
+	margin-left: auto;
+	margin-right: auto;
+	border: 3px solid black;
+	border-radius: 20px;
+	padding:15px;}
+.content{width: 90%;
+	background-color: white;
+	margin-left: auto;
+	margin-right: auto;
+	border: 3px solid black;
+	border-radius: 20px;
+	padding:15px;}
+table th{ border: none;}
+table td{
+	text-align: center;
+	border:1px solid black;
+	border-radius: 5px;
+}
+table tr:hover { background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	text-decoration: none;
+} 
+/*#manualEntryButton{padding: 10px; 
+	background-color: rgba(15, 17, 14, 0.8);
+	border: 1px solid white;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;}
+a#manualEntryButton{color: white;
+	text-decoration: none;}
+a#manualEntryButton:hover{font-size:150%;
+	background-color: rgba(215, 44, 44, 0.8);
+	color: black;}*/
+input[type=submit]{padding: 10px; 
+	background-color: rgba(15, 17, 14, 0.8);
+	color: white;
+	border: 1px solid white;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;}
+input[type=submit]:hover{font-size:150%;
+	background-color: rgba(215, 44, 44, 0.8); 
+	color: black;}
+input[type=reset]{padding: 10px; 
+	background-color: rgba(15, 17, 14, 0.8);
+	color: white;
+	border: 1px solid white;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;}
+input[type=reset]:hover{font-size:150%;
+	background-color: rgba(215, 44, 44, 0.8);
+	color: black;}
+input[type=button]{padding: 10px; 
+	background-color: rgba(15, 17, 14, 0.8);
+	color: white;
+	border: 1px solid white;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;}
+input[type=button]:hover{font-size:150%;
+	background-color: rgba(215, 44, 44, 0.8);
+	color: black;}
+
+nav ul{
+margin-left: auto;
+margin-right: auto;
+padding-top: 30px;}
+nav ul li{
+	display: inline-block;
+}
+nav ul li a{
+	padding: 10px; 
+	background-color: rgba(15, 17, 14, 0.8);
+	border: 1px solid white;
+	border-radius: 5px;
+	margin: 10px;
+	text-decoration: none;
+	color: white;
+	text-decoration: none;
+}
+nav ul li a:hover{
+	/*font-size:150%;*/
+	background-color: rgba(215, 44, 44, 0.8);
+	color: black;
+}
+.error{
+	position: absolute;
+	width: 20%;
+	left: 0;
+	right: 0;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	z-index: 99;
+	top: 20px;
+	color: red;
+	padding: 10px;
+	background-color: white;
+	border:3px solid black;
+	border-radius: 10px;
+}
+.success{
+	position: absolute;
+	width: 20%;
+	left: 0;
+	right: 0;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	z-index: 99;
+	top: 20px;
+	color: green;
+	padding: 10px;
+	background-color: white;
+	border:3px solid black;
+	border-radius: 10px;
+}
