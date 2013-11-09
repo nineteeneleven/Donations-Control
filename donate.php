@@ -6,10 +6,10 @@ $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB);
 $tools = new tools;
 //$SteamQuery = new SteamQuery;
 $ConvertID = new SteamIDConvert;
-$steamid_user =$tools->cleanInput($_GET['steamid_user']);
+$steamid_user =$tools->cleanInput($_REQUEST['steamid_user']);
 
 if(TIERED_DONOR){
-     $tier = $tools->cleanInput($_GET['tier']);
+     $tier = $tools->cleanInput($_REQUEST['tier']);
 }
 
 $useCache = false;
@@ -48,7 +48,7 @@ function dun_fucked_up(){
     }
 }
 ///////////////////////
-$amount = $tools->cleanInput($_GET['amount']);
+$amount = $tools->cleanInput($_REQUEST['amount']);
 if (strpos($amount, "$") === 0) {
   $amount = substr($amount, 1);
 }

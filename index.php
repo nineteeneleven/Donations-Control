@@ -111,7 +111,7 @@ $mysqliD->close();
     print("<style type=\"text/css\">#infobox{font-size: 12px;}</style>");
     print("<center>");
     print("<input type=\"image\" src=\"images/btn_donateCC_LG.gif\" form=\"donate_form\" />");
-    print("<form action=\"donate.php\" target=\"blank\" id=\"donate_form\">");
+    print("<form action=\"donate.php\" target=\"blank\" id=\"donate_form\" method=\"post\">");
     print("<p>Amount: $<input type=\"text\" name=\"amount\" size=\"5\" class=\"inputbox\" value=\"5\" required=\"true\"></p>");
     if(TIERED_DONOR){
           print("<input type=\"radio\" name=\"tier\" value=\"1\" checked =\"1\" id=\"tier1\">".$group1['name']." <input type=\"radio\" name=\"tier\" value=\"2\" id=\"tier2\">".$group2['name']."<br />");
@@ -142,7 +142,7 @@ $mysqliD->close();
   print("<style type=\"text/css\">#infobox{font-size: 12px;}</style>");
   print("<center>");
   print("<input type=\"image\" src=\"images/btn_donateCC_LG.gif\" form=\"donate_form\" />");
-  print("<form action=\"donate.php\" target=\"blank\" id=\"donate_form\">");
+  print("<form action=\"donate.php\" target=\"blank\" id=\"donate_form\" method=\"post\">");
   print("<p>Amount: $<input type=\"text\" id=\"paypalamount\" name=\"amount\" size=\"5\" class=\"inputbox\" value=\"5\" required=\"true\"></p>");
   if(TIERED_DONOR){
         print("<input type=\"radio\" name=\"tier\" value=\"1\" checked =\"1\" id=\"tier1\">".$group1['name']." <input type=\"radio\" name=\"tier\" value=\"2\" id=\"tier2\">".$group2['name']."<br />");

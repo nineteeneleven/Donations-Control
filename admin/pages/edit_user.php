@@ -41,7 +41,7 @@ if (isset($_POST['edit_user_form'])) {
 	$rehash = false;
 	$goBack = true;
 
-	$username = preg_replace("/[^[:print:]]/", ' ', $username);
+$username =$tools->cleanUser($username);   
 	//$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($mysqliD->error . " " . $mysqliD->errno);
 
 	//look up player, and see if they are activated

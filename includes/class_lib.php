@@ -187,6 +187,14 @@ class tools{
         }
 
     }
+    public function cleanUser($username){
+        $username =preg_replace('/[^\w]/', '', $username);
+        $username = trim($username);
+        if (empty($username)) {
+            $username=$this->randomPassword(6);
+        }
+        return $username;
+    }
     public function cleanInput($data)
     {
       $data = trim($data);

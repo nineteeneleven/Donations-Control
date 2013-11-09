@@ -7,7 +7,7 @@ $ConvertID = new SteamIDConvert;
 $sb = new SourceBans;
 $tools = new tools;
 $sysLog = new log;
-$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno));
+$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
 
 $log=fopen('../admin/logs/IPN-'.date('d-m-Y_G-i-s').'.log', "a");
 
@@ -74,7 +74,7 @@ if (!$fp)
 
 
 
-        $cacheReturn=$mysqliD->query("SELECT * FROM `player_tracker` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno));
+        $cacheReturn=$mysqliD->query("SELECT * FROM `player_tracker` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
         if($cacheReturn->num_rows > 0) {
             $cacheResult = $cacheReturn->fetch_array(MYSQLI_ASSOC);
             $username = $cacheResult['playername'];
@@ -89,8 +89,7 @@ if (!$fp)
             }
         } 
         //strip the username of special chars and escape  it for mysql
-        $username =preg_replace('/[^\w]/', '', $username);
-        $username = trim($username);
+        $username =$tools->cleanUser($username);       
         $username = $mysqliD->real_escape_string($username);
         $steamid_user = $mysqliD->real_escape_string($steamid_user);        
         fwrite($log, "Steam ID: " . $steamid_user." (". $username . ")\r\n"."amount: " . $amount . "\r\n"."Sign Up Date: " . $sign_up_date . "\r\n".
@@ -102,12 +101,16 @@ if (!$fp)
 
         //checking if donor already exists
 
-        $result = $mysqliD->query("SELECT user_id,total_amount,expiration_date,txn_id FROM donors WHERE steam_id = '{$steamid_user}';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno));
+        $result = $mysqliD->query("SELECT user_id,total_amount,expiration_date,txn_id,activated FROM donors WHERE steam_id = '{$steamid_user}';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
         if($result){
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $expDate = $row['expiration_date'];
             $n= "+".$days_purchased . " days";
-            $expiration_date = strtotime($n,$expDate);
+            if ($row['activated']=="2") {
+                $expiration_date = $expire;
+            }else{
+                $expiration_date = strtotime($n,$expDate);
+            }
             unset($n);
             $total_amount = $row['total_amount'];
             $total_amount = $total_amount + $amount;
@@ -161,7 +164,7 @@ if (!$fp)
                                                         '{$txn_id}',
                                                         '{$tier}');";
             }
-            $mysqliD->query($insert_sql) or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno));
+            $mysqliD->query($insert_sql) or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
             unset($insert_sql);
             if(TIERED_DONOR&&CCC&&$tier=='2'){
 
@@ -179,18 +182,18 @@ if (!$fp)
                         fwrite($log, "reloading CCC failed.\r\n");
                     }
                 }else{
-                    $sysLog->logError($mysqliD->error . " " . $mysqliD->errno);
+                    $sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__);
                 }
                 unset($ccc_sql); 
             }
             $mysqliD->close();
             fwrite($log, "Finished inserting into the donor database, preparing for sourcebans insertion.\r\n");
 
-                    $mysqliS = new mysqli(SB_HOST,SB_USER,SB_PASS,SOURCEBANS_DB)or die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno));
+                    $mysqliS = new mysqli(SB_HOST,SB_USER,SB_PASS,SOURCEBANS_DB)or die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno ." Line Number: ". __LINE__));
 
                     //check sourcebans database to see if user is already in there
                     
-                    $result = $mysqliS->query("SELECT * FROM `".SB_PREFIX."_admins` WHERE authid='".$steamid_user."';") or die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno));
+                    $result = $mysqliS->query("SELECT * FROM `".SB_PREFIX."_admins` WHERE authid='".$steamid_user."';") or die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno ." Line Number: ". __LINE__));
 
                         if($result){
 
@@ -208,7 +211,7 @@ if (!$fp)
                                 if($mysqliS->query("INSERT INTO `" . SOURCEBANS_DB . "` . `".SB_PREFIX."_admins` (user,authid,password,gid,extraflags,immunity,srv_group) VALUES ('{$username}', '{$steamid_user}', '{$sb_pw}' , '-1' , '0' , '0', '{$srv_group}');")){
                                      fwrite($log, "inserted into sb_admins.\r\n");
                                  }else{
-                                    die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno));
+                                    die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno ." Line Number: ". __LINE__));
                                 }
 
                                 if($admin_id = $mysqliS->insert_id){
@@ -218,7 +221,7 @@ if (!$fp)
                                 if($mysqliS->query("INSERT INTO `" . SOURCEBANS_DB . "` . `".SB_PREFIX."_admins_servers_groups` (admin_id,group_id,srv_group_id,server_id) VALUES('{$admin_id}', '{$group_id}', '{$srv_group_id}', '{$server_id}');")){
                                      fwrite($log, "inserted into sb_admins_servers_groups.\r\n");
                                 }else{
-                                    die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno));
+                                    die($sysLog->logError($mysqliS->error . " " . $mysqliS->errno ." Line Number: ". __LINE__));
                                 }
 
                                 $mysqliS->close();
