@@ -42,7 +42,7 @@ if (isset($_POST['edit_user_form'])) {
 	$goBack = true;
 
 $username =$tools->cleanUser($username);   
-	//$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($mysqliD->error . " " . $mysqliD->errno);
+$username = $mysqliD->real_escape_string($username);
 
 	//look up player, and see if they are activated
 	$get_record = "SELECT activated,tier FROM donors WHERE user_id=" . $user_id;

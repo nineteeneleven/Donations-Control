@@ -17,6 +17,7 @@ if (isset($_POST['COMMAND'])) {
 	if (STATS) {
 		@$log->stats("SQ");
 	}
+	$log->logAction($_SESSION['username']." sent command '".$query."' to all servers");
 	unset($sb);
 }else{
 	echo "<h3><u>About this tool</u></h3>";

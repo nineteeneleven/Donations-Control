@@ -77,11 +77,12 @@ if (!defined('NineteenEleven')) {
 
 	        $tracker = $PTresult->fetch_array(MYSQLI_ASSOC);
 	   
-	}
+		}
 
 		$totalC = ($totalC + $db_field['current_amount']);
 		$total = ($total + $db_field['total_amount']);
 		//change color of expiration date, based on status
+
 		switch ($db_field['activated']) {
 			case 1:
 				$expiration_date = "<div style='color:green; border:none;'>".date('n/j/Y',$db_field['expiration_date'])."</div>";

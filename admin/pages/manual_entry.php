@@ -35,8 +35,8 @@ $username = $profile->response->players[0]->personaname;
 // Get User Profile Data
 
 
-$username =$tools->cleanUser($username);     
-//$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($mysqliD->error . " " . $mysqliD->errno);
+$username =$tools->cleanUser($username);   
+$username = $mysqliD->real_escape_string($username);
     $result = $mysqliD->query("SELECT user_id FROM donors WHERE steam_id = '{$steam_id}';")or die($log->logError($mysqliD->error . " " . $mysqliD->errno));
     if($result){
         $row = $result->fetch_array(MYSQLI_ASSOC);

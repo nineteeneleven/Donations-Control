@@ -34,7 +34,7 @@ if ($mysqliD->query("DESCRIBE `custom_chatcolors`")) {
 				  `textcolor` varchar(8) DEFAULT NULL,
 				  PRIMARY KEY (`index`),
 				  UNIQUE KEY `identity` (`identity`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;";
+				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
 	if($mysqliD->query($ccc_create)){
 		echo "CCC table created.\r\n";
 	}else{
@@ -73,6 +73,16 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		echo '<h3>FAILED TO UPDATE: ' . $row['username'] . '</h3><br />';
 	}
 }
+//Set database to UTF8
+$mysqliD->query("alter table donors charset=utf8;")or die($mysqliD->error . " " . $mysqliD->errno);
+$mysqliD->query("alter table cache charset=utf8;")or die($mysqliD->error . " " . $mysqliD->errno);
+$mysqliD->query("alter table custom_chatcolors charset=utf8;")or die($mysqliD->error . " " . $mysqliD->errno);
+$mysqliD->query("alter table player_tracker charset=utf8;")or die($mysqliD->error . " " . $mysqliD->errno);
+$mysqliD->query("alter database ".DONATIONS_DB." charset=utf8;")or die($mysqliD->error . " " . $mysqliD->errno);
+$mysqliD->query("ALTER TABLE `donors` MODIFY username varchar(255);")or die($mysqliD->error . " " . $mysqliD->errno);
+
+
+
 $mysqliD->close();
 
 ?>

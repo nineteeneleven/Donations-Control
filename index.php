@@ -94,6 +94,7 @@ if (PLAYER_TRACKER) {
 $mysqliD->close();
     print("<!DOCTYPE html>");
     print("<html>");
+    print('<meta http-equiv="Content-Type"content="text/html;charset=UTF8">');
     print("<head>");
 
     //Javascript to allow gifting

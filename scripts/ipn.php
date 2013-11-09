@@ -9,10 +9,11 @@ $tools = new tools;
 $sysLog = new log;
 $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
 
+
 $log=fopen('../admin/logs/IPN-'.date('d-m-Y_G-i-s').'.log', "a");
 
 $req = 'cmd=_notify-validate';
-
+ 
 $header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
 $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";

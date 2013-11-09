@@ -1,0 +1,45 @@
+2.0.4 -11/9/13
+added loggin for server commands sent
+
+fixed manual deletion not removeing from ccc database
+
+full support for custom characters
+
+made notification in admin panel hide on click.
+
+2.0.1 -11/7/13
+Fixed problem when donors Steam name has too many special characters. 
+
+2.0 -11/7/13
+
+
+Re-wrote basically everything.
+
+Fixed the resolution of Steam ids. 
+
+Added an option for 2 tiers of donors. 
+
+Stripped Nfo support
+
+Fixed time stamps
+
+Adding proper admin login system  (uses Sourcebans log-in info)
+
+Changing over to mysqli 
+
+PayPal sandbox support 
+
+Add support if sourcebans database and donor database are on different servers
+
+Added support for a different SourceBans Prefix.
+
+Added logs, and a log viewer.
+
+Added a page to query your servers with a custom command
+
+Added support for custom chatcolors.
+
+Added support for different time zones
+
+Added thank you email support.
+

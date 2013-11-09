@@ -11,7 +11,7 @@ $steamid_user =$tools->cleanInput($_REQUEST['steamid_user']);
 if(TIERED_DONOR){
      $tier = $tools->cleanInput($_REQUEST['tier']);
 }
-
+ 
 $useCache = false;
 
 $cacheQuery = $mysqliD->query("SELECT * FROM `cache` WHERE steamid ='" . $steamid_user ."';")or die('Failed to query database');
@@ -86,8 +86,7 @@ if(!$useCache){
         $avatarfull = $xml->players->player->avatarfull;
     }
 }
-$username = preg_replace("/[^[:print:]]/", ' ', $username);
-
+$username = $tools->cleanUser($username);
 //check if current donor
 
 $result = $mysqliD->query("SELECT expiration_date FROM donors WHERE steam_id = ".$userInfo['steamid'].";");
@@ -103,6 +102,7 @@ if($result){
 $mysqliD->close();
 echo'
 <html>
+<meta http-equiv="Content-Type"content="text/html;charset=UTF8">
 <head>
     <script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>
     <style type="text/css">

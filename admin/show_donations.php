@@ -9,13 +9,13 @@ else{
 }
 define('NineteenEleven', TRUE);
 define('adminPage', TRUE);
-
 require_once '../includes/config.php';
 require_once '../includes/class_lib.php';
 require_once '../scripts/rcon_code.php';
-$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($mysqliD->error . " " . $mysqliD->errno);
+$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno));
 $log = new log;
 echo '<html>';
+echo '<meta http-equiv="Content-Type"content="text/html;charset=UTF8">';
 echo '<head>';
 echo '<link type="text/css" rel="stylesheet" href="style.css" />';
 echo'<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />';
@@ -24,6 +24,9 @@ echo'<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>';
 echo'<script>
 	$(document).ready(function() {
 		$(".date").datepicker({ dateFormat: "mm/dd/y" });
+		 $(".message").click(function(){
+		 	$(this).fadeOut();
+		 })
 	});
 </script>';
 echo '<title>Donor List</title>';
@@ -70,7 +73,10 @@ if (isset($_GET['logout'])) {
 	}
 	unset($sb);
 	if(TIERED_DONOR&&CCC&&$tier=='2'){
-		@$mysqliD->query("DELETE FROM `custom_chatcolors` WHERE `identity` ='" . $steam_id . "';");
+		$ccc_del = "DELETE FROM `custom_chatcolors` WHERE `identity` ='" . $steam_id . "';";
+		if(!$mysqliD->query($ccc_del)){
+			$log->logError($mysqliD->error . " " . $mysqliD->errno);
+		}
 	}
 	$_SESSION['message']="<h3 class='success'>Steam ID {$username} has been removed completly from the system.</h3>";
 
@@ -86,7 +92,7 @@ if (isset($_GET['logout'])) {
 	require_once 'pages/nuclear.php';
 }else{
 	if (isset($_SESSION['message'])) {
-		echo $_SESSION['message'];
+		echo "<div class='message'>" . $_SESSION['message'] . "</div>";
 		unset($_SESSION['message']);
 	}
 	require_once 'pages/list.php';

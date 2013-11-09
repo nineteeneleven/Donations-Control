@@ -1,6 +1,7 @@
 <?php
-$log = new log;
 
+if(file_exists("logs/error.log")){
+$log = new log;
 $error=array_reverse($log->getLog('error.log'));
 
 
@@ -16,4 +17,8 @@ foreach ($error as $err) {
 }
 echo "</table>";
 unset($log);
+}else{
+	$_SESSION['message'] = "<h1 class='success'>No Errors Reported</h1>";
+	header("location: show_donations.php");
+}
 ?>
