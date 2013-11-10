@@ -14,24 +14,24 @@ if (isset($_POST['edit_user_form'])) {
 	$SteamQuery = new SteamQuery;
 	$sb = new SourceBans;
 	$log = new log;
-	$user_id = $tools->cleanInput($_POST['user_id']);
-	$username = $tools->cleanInput($_POST['username']);
-	$steamid_user = $tools->cleanInput($_POST['steam_id']);
-	$userInfo = $ConvertID->SteamIDCheck($steamid_user);
-	$steam_id = $userInfo['steamid'];
-	$steamId64 = $userInfo['steamID64'];
-	$steam_link = $_POST['steam_link'];
-	$sign_up_date = strtotime($tools->cleanInput($_POST['sign_up_date']));
-	$email = trim($_POST['email']);
-	if ($_POST['renewal_date'] == 'Never') {
+	$user_id = $mysqliD->real_escape_string($tools->cleanInput($_POST['user_id']));
+	$username = $mysqliD->real_escape_string($tools->cleanUser($_POST['username']));
+	$steamid_user = $mysqliD->real_escape_string($tools->cleanInput($_POST['steam_id']));
+	$userInfo = $mysqliD->real_escape_string($ConvertID->SteamIDCheck($steamid_user));
+	$steam_id = $mysqliD->real_escape_string($userInfo['steamid']);
+	$steamId64 = $mysqliD->real_escape_string($userInfo['steamID64']);
+	$steam_link = $mysqliD->real_escape_string($_POST['steam_link']);
+	$sign_up_date = $mysqliD->real_escape_string(strtotime($tools->cleanInput($_POST['sign_up_date'])));
+	$email = $mysqliD->real_escape_string($tools->cleanInput($_POST['email']));
+	if ($_POST['renewal_date'] == 'Never' || empty($_POST['renewal_date'])) {
 		$renewal_date = 0;
 	}else{
-		$renewal_date = strtotime($tools->cleanInput($_POST['renewal_date']));
+		$renewal_date = $mysqliD->real_escape_string(strtotime($tools->cleanInput($_POST['renewal_date'])));
 	}
-	$current_amount = $tools->dollaBillz($tools->cleanInput($_POST['current_amount']));
-	$total_amount = $tools->dollaBillz($tools->cleanInput($_POST['total_amount']));
-	$expiration_date = strtotime($tools->cleanInput($_POST['expiration_date']));
-	$notes = $tools->cleanInput($_POST['notes']);
+	$current_amount = $mysqliD->real_escape_string($tools->dollaBillz($tools->cleanInput($_POST['current_amount'])));
+	$total_amount = $mysqliD->real_escape_string($tools->dollaBillz($tools->cleanInput($_POST['total_amount'])));
+	$expiration_date = $mysqliD->real_escape_string(strtotime($tools->cleanInput($_POST['expiration_date'])));
+	$notes = $mysqliD->real_escape_string($tools->cleanInput($_POST['notes']));
 	$activated = $_POST['activated'];
 	if(TIERED_DONOR){
 		$tier = $_POST['tier'];
@@ -40,9 +40,6 @@ if (isset($_POST['edit_user_form'])) {
 	}
 	$rehash = false;
 	$goBack = true;
-
-$username =$tools->cleanUser($username);   
-$username = $mysqliD->real_escape_string($username);
 
 	//look up player, and see if they are activated
 	$get_record = "SELECT activated,tier FROM donors WHERE user_id=" . $user_id;
@@ -77,7 +74,7 @@ $username = $mysqliD->real_escape_string($username);
 					}
 				unset($r);
 				if(TIERED_DONOR&&CCC&&$post_tier=='2'){
-					$mysqliD->query("DELETE FROM `custom_chatcolors` WHERE identity ='" . $steam_id . "';")or die($log->logError($mysqliD->error . " " . $mysqliD->errno));
+					$mysqliD->query("DELETE FROM `custom_chatcolors` WHERE identity ='" . $steam_id . "';")or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 				}
 				break;
 
@@ -108,7 +105,7 @@ $username = $mysqliD->real_escape_string($username);
 	}
 
 	$insert_sql="UPDATE `donors` SET `username` = '{$username}', `steam_id` = '{$steam_id}', `sign_up_date` = '{$sign_up_date}', `email` = '{$email}', `renewal_date` = '{$renewal_date}', `current_amount` = '{$current_amount}', `total_amount` = '{$total_amount}', `expiration_date` = '{$expiration_date}', `steam_link` = '{$steam_link}', `notes` = '{$notes}', `activated` = '{$activated}', `tier` = '{$tier}' WHERE `user_id` = '{$user_id}';";
-	$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error. " " . $mysqliD->errno));
+	$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error. " " . $mysqliD->errno ." Line Number: " . __LINE__));
 
 	if($rehash){
 		if(!$sb->queryServers('sm_reloadadmins')){
@@ -170,18 +167,18 @@ if($result){
 		<script type="text/javascript">
 		<?php
 			if(TIERED_DONOR){
-				echo 'function delete_confirm(steam_id,username,tier){
+				echo 'function delete_confirm(steam_id,tier){
 					if (confirm("Are you sure you want to delete this user, and remove them from all databases? \n This is permanent and can\'t be un-done!")){
-						window.location = "show_donations.php?delete_user=1&steam_id=" + steam_id +"&username=" + username + "&tier=" + tier;
+						window.location = "show_donations.php?delete_user=1&steam_id=" + steam_id + "&tier=" + tier;
 					}
 				};';
 			}else{
-				echo 'function delete_confirm(steam_id,username){
+				echo 'function delete_confirm(steam_id){
 					if (confirm("Are you sure you want to delete this user, and remove them from all databases? \n This is permanent and can\'t be un-done!")){
-						window.location = "show_donations.php?delete_user=1&steam_id=" + steam_id +"&username=" + username;
+						window.location = "show_donations.php?delete_user=1&steam_id=" + steam_id;
 					}
 				};';
-			}
+			}		
 			?>
 			$(document).ready(function() {
 				$(".date").datepicker({ dateFormat: "mm/dd/y" });
@@ -243,10 +240,10 @@ if($result){
 		   <input type='submit' value='Edit User' form='edit_user_form' />
 		   <?php
 		   if (TIERED_DONOR) {
-		   		echo '<input type="button" onclick="delete_confirm(\''.$steam_id.'\',\''.$username.'\',\''.$tier.'\');" value="Delete '. $username.' "/>';
+		   		echo '<input type="button" onclick="delete_confirm(\''.$steam_id.'\',\''.$tier.'\');" value="Delete '. $username.' "/>';
 		   }else{
-		   		echo '<input type="button" onclick="delete_confirm(\''.$steam_id.'\',\''.$username.'\');" value="Delete '. $username.' "/>';
-		   }
+		   		echo '<input type="button" onclick="delete_confirm(\''.$steam_id.'\');" value="Delete '. $username.' "/>';
+		   }   
 		
 echo $footer;
 echo "</html>";

@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `donors` (
   `steam_id` varchar(30) NOT NULL,
   `sign_up_date` varchar(10) NOT NULL,
   `email` varchar(60) DEFAULT NULL,
-  `renewal_date` varchar(10) DEFAULT NULL,
+  `renewal_date` varchar(10) DEFAULT '0',
   `current_amount` varchar(10) NOT NULL,
   `total_amount` varchar(10) DEFAULT NULL,
   `expiration_date` varchar(10) NOT NULL,

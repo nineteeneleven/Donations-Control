@@ -12,7 +12,7 @@ define('adminPage', TRUE);
 require_once '../includes/config.php';
 require_once '../includes/class_lib.php';
 require_once '../scripts/rcon_code.php';
-$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno));
+$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 $log = new log;
 echo '<html>';
 echo '<meta http-equiv="Content-Type"content="text/html;charset=UTF8">';
@@ -57,10 +57,11 @@ if (isset($_GET['logout'])) {
 }elseif(isset($_GET['delete_user']) && $_GET['delete_user'] == 1){
 	$sb = new SourceBans;
 	$steam_id = $_GET['steam_id'];
-	$tier = $_GET['tier'];
-	$username = $_GET['username'];
+	if (isset($_GET['tier'])) {
+	$tier = $_GET['tier'];		
+	}
 	$delete_sql = "DELETE FROM `donors` WHERE `steam_id` ='" . $steam_id . "';"; 
-	$mysqliD->query($delete_sql) or die("<h1 class='error'>Failed to delete $username from donations database.</h1>" . $log->logError($mysqliD->error . " " . $mysqliD->errno));
+	$mysqliD->query($delete_sql) or die("<h1 class='error'>Failed to delete $steam_id from donations database.</h1>" . $log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 	if ($sb->removeDonor($steam_id,$tier)) {
 		if($sb->queryServers('sm_reloadadmins')){
 			$log->logAction('Rehashed all servers');
@@ -68,19 +69,19 @@ if (isset($_GET['logout'])) {
 			$log->logError('Failed to rehash servers.');
 		}
 	}else{
-		echo "<h1 class='error'>There was a problem removing {$username} from sourcebans.</h1>";
-		$log->logError('Unable to remove $username from sourcebans.');
+		echo "<h1 class='error'>There was a problem removing {$steam_id} from sourcebans.</h1>";
+		$log->logError('Unable to remove $steam_id from sourcebans.');
 	}
 	unset($sb);
 	if(TIERED_DONOR&&CCC&&$tier=='2'){
 		$ccc_del = "DELETE FROM `custom_chatcolors` WHERE `identity` ='" . $steam_id . "';";
 		if(!$mysqliD->query($ccc_del)){
-			$log->logError($mysqliD->error . " " . $mysqliD->errno);
+			$log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__);
 		}
 	}
-	$_SESSION['message']="<h3 class='success'>Steam ID {$username} has been removed completly from the system.</h3>";
+	$_SESSION['message']="<h3 class='success'>Steam ID {$steam_id} has been removed completly from the system.</h3>";
 
-	$log->logAction($_SESSION['username'] ." deleted $username");
+	$log->logAction($_SESSION['steam_id'] ." deleted $steam_id");
 
 	header('location: show_donations.php');
 

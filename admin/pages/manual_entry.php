@@ -10,25 +10,27 @@ if (isset($_POST['manual_entry'])) {
 	$tools = new tools;
 	$SteamQuery = new SteamQuery;
 	$sb = new SourceBans;
-	$steamid_user = $tools->cleanInput($_POST['steam_id']);
-	$userInfo = $ConvertID->SteamIDCheck($steamid_user);
-	$steam_id = $userInfo['steamid'];
-	$steamId64 = $userInfo['steamID64'];
-	$steam_link = $userInfo['steam_link'];
-	$sign_up_date = strtotime($tools->cleanInput($_POST['sign_up_date'])) or $error['sign_up_date'] = TRUE;
-	$email = trim($_POST['email']);
-	$renewal_date = strtotime($tools->cleanInput($_POST['renewal_date'])) or $error['renewal_date'] = TRUE;
-	$current_amount = $tools->dollaBillz($tools->cleanInput($_POST['current_amount']));
-	$total_amount = $tools->dollaBillz($tools->cleanInput($_POST['total_amount']));
-	$expiration_date = strtotime($tools->cleanInput($_POST['expiration_date']));
-	$notes = $tools->cleanInput($_POST['notes']);
+	$steamid_user = $mysqliD->real_escape_string($tools->cleanInput($_POST['steam_id']));
+	$userInfo = $mysqliD->real_escape_string($ConvertID->SteamIDCheck($steamid_user));
+	$steam_id = $mysqliD->real_escape_string($userInfo['steamid']);
+	$steamId64 = $mysqliD->real_escape_string($userInfo['steamID64']);
+	$steam_link = $mysqliD->real_escape_string($userInfo['steam_link']);
+	$sign_up_date = $mysqliD->real_escape_string(strtotime($tools->cleanInput($_POST['sign_up_date'])));
+	$email = $mysqliD->real_escape_string($tools->cleanInput($_POST['email']));
+	$renewal_date = $mysqliD->real_escape_string(strtotime($tools->cleanInput($_POST['renewal_date'])));
+	$current_amount = $mysqliD->real_escape_string($tools->dollaBillz($tools->cleanInput($_POST['current_amount'])));
+	$total_amount = $mysqliD->real_escape_string($tools->dollaBillz($tools->cleanInput($_POST['total_amount'])));
+	$expiration_date = $mysqliD->real_escape_string(strtotime($tools->cleanInput($_POST['expiration_date'])));
+	$notes = $mysqliD->real_escape_string($tools->cleanInput($_POST['notes']));
 	$activated = $_POST['activated'];
 	if(TIERED_DONOR){
 		$tier = $_POST['tier'];
 	}else{
 		$tier = '1';
 	}
-
+	if (empty($renewal_date)) {
+		$renewal_date = 0;
+	}
 
 $profile = $SteamQuery->GetPlayerSummaries($userInfo['steamID64']);
 $username = $profile->response->players[0]->personaname;
@@ -37,7 +39,7 @@ $username = $profile->response->players[0]->personaname;
 
 $username =$tools->cleanUser($username);   
 $username = $mysqliD->real_escape_string($username);
-    $result = $mysqliD->query("SELECT user_id FROM donors WHERE steam_id = '{$steam_id}';")or die($log->logError($mysqliD->error . " " . $mysqliD->errno));
+    $result = $mysqliD->query("SELECT user_id FROM donors WHERE steam_id = '{$steam_id}';")or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
     if($result){
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $user_id = $row['user_id'];
@@ -50,7 +52,7 @@ $username = $mysqliD->real_escape_string($username);
     } else {
     	$insert_sql = "INSERT INTO donors (username,steam_id,sign_up_date,renewal_date,current_amount,total_amount,expiration_date,steam_link,email,notes,activated,tier) VALUES ('{$username}', '{$steam_id}', '{$sign_up_date}', '{$renewal_date}','{$current_amount}','{$total_amount}','{$expiration_date}','{$steam_link}','{$email}','{$notes}','{$activated}','{$tier}');";
     }
-	$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error . " " . $mysqliD->errno));
+	$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 
 	//insert/remove user from sourcebans database
 		switch ($activated) {
@@ -69,7 +71,7 @@ $username = $mysqliD->real_escape_string($username);
 					unset($r);					
 
 					$insert_sql="UPDATE `donors` SET `username` = '{$username}', `steam_id` = '{$steam_id}', `sign_up_date` = '{$sign_up_date}', `email` = '{$email}', `renewal_date` = '{$renewal_date}', `current_amount` = '{$current_amount}', `total_amount` = '{$total_amount}', `expiration_date` = '{$expiration_date}', `steam_link` = '{$steam_link}', `notes` = '{$notes}', `activated` = '{$activated}', `tier` = '{$tier}' WHERE `user_id` = '{$user_id}';";
-					$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>".$log->logError($mysqliD->error . " " . $mysqliD->errno));
+					$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>".$log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 					break;
 
 				case 2:
@@ -84,7 +86,7 @@ $username = $mysqliD->real_escape_string($username);
 					unset($r);
 							
 					$insert_sql="UPDATE `donors` SET `username` = '{$username}', `steam_id` = '{$steam_id}', `sign_up_date` = '{$sign_up_date}', `email` = '{$email}', `renewal_date` = '{$renewal_date}', `current_amount` = '{$current_amount}', `total_amount` = '{$total_amount}', `expiration_date` = '{$expiration_date}', `steam_link` = '{$steam_link}', `notes` = '{$notes}', `activated` = '{$activated}', `tier` = '{$tier}' WHERE `user_id` = '{$user_id}';";
-					$mysqliD->query($insert_sql)or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error . " " . $mysqliD->errno));
+					$mysqliD->query($insert_sql)or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 
 					break;
 

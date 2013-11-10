@@ -63,7 +63,7 @@ $mysqliD->query("ALTER TABLE `donors` CHANGE `user_id` `user_id` INT(11) NOT NUL
 	CHANGE `steam_id` `steam_id` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
 	CHANGE `sign_up_date` `sign_up_date` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
 	CHANGE `email` `email` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
-	CHANGE `renewal_date` `renewal_date` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
+	CHANGE `renewal_date` `renewal_date` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0', 
 	CHANGE `current_amount` `current_amount` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
 	CHANGE `total_amount` `total_amount` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
 	CHANGE `expiration_date` `expiration_date` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
