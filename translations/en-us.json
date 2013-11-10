@@ -1,0 +1,35 @@
+{
+	"checker" : "http://jsonlint.com/",
+	"steamdown": [
+		{
+			"msg1": "The Steam Community is currently down",
+			"msg2": "We were unable to get your ID based on what you entered.",
+			"msg3": "Please enter your STEAM:0:0:00000 ID or wait untill Steam comes back online",
+			"msg4" : "Sorry we were unable to get your Steam ID.",
+			"msg5": "You probably entered an incorrect Steam ID",
+			"msg6": "Please check and make sure you entered a valid Steam ID and try again."
+		}
+	],
+
+	"misc":[
+		{
+			"msg1" : "Click here to go back",
+			"msg2" : "Chat Color",
+			"msg3" : "Name Color"
+		}
+	],
+	"donate":[
+		{	
+			"msg1" : "DONATE!",
+			"msg2" : "Welcome back %s your current donor perks expire on",
+			"msg3" : "Sorry, the minimum donation that can be processed is $5. Please adjust accordingly",
+			"msg4" : "Please make sure this is you!",
+			"msg5" : "You wish to donate $%s. For your generosity, you will receive %s days of donor perks",
+			"msg6" : "on the %s level",
+			"msg7" : "Beginning on %s and ending on %s",
+			"msg8" : "Please select the colors and tag you would like to use for your in-game chat.",
+			"msg9" : "If this is you, and you agree please click below, to proceed with your donation, you will be redirected to PayPal to process your contribution."
+		}
+	]
+		
+}

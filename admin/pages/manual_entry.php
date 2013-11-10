@@ -11,7 +11,7 @@ if (isset($_POST['manual_entry'])) {
 	$SteamQuery = new SteamQuery;
 	$sb = new SourceBans;
 	$steamid_user = $mysqliD->real_escape_string($tools->cleanInput($_POST['steam_id']));
-	$userInfo = $mysqliD->real_escape_string($ConvertID->SteamIDCheck($steamid_user));
+	$userInfo = $ConvertID->SteamIDCheck($steamid_user);
 	$steam_id = $mysqliD->real_escape_string($userInfo['steamid']);
 	$steamId64 = $mysqliD->real_escape_string($userInfo['steamID64']);
 	$steam_link = $mysqliD->real_escape_string($userInfo['steam_link']);
