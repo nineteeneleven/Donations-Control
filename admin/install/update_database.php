@@ -98,12 +98,30 @@ $result = $mysqliD->query("SELECT * FROM `donors` WHERE 1")or die("Database quer
 while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 	$user_id = $row['user_id'];
 	$sDate=strtotime($row['sign_up_date']);
-	if($row['renewal_date']=='N/A' || $row['renewal_date']=='n/a' || empty($row['renewal_date'])){
+		if (empty($sDate)) {
+			$sDate=$row['sign_up_date'];
+			echo "Not updating sign_up_date for ". $row['username']." date mis-match in database.<br />";
+		}
+
+	if($row['renewal_date']=='N/A' || $row['renewal_date']=='n/a'  || $row['renewal_date']=='0'|| empty($row['renewal_date'])){
 		$rdate = 0;
+		if (empty($rDate)) {
+			$rDate=$row['renewal_date'];
+			echo "Not updating renewal_date for ". $row['username']." date mis-match in database.<br />";
+		}
 	}else{
 		$rDate=strtotime($row['renewal_date']);
+		if (empty($rDate)) {
+			$rDate=$row['renewal_date'];
+			echo "Not updating renewal_date for ". $row['username']." date mis-match in database.<br />";
+		}
 	}
 		$eDate=strtotime($row['expiration_date']);
+		if (empty($eDate)) {
+			$eDate=$row['expiration_date'];
+			echo "Not updating expiration_date for ". $row['username']." date mis-match in database.<br />";
+
+		}
 
 	if($mysqliD->query("UPDATE `donors` SET `sign_up_date`= '{$sDate}', `renewal_date` = '{$rDate}', `expiration_date` = '{$eDate}', `tier` ='1' WHERE user_id = {$user_id};"))
 	{
