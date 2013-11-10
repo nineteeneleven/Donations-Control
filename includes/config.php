@@ -119,5 +119,5 @@ define('SB_PASS', DB_PASS);
 }
 
 //Please consider donating before removing/changing the footer http://nineteeneleven.info
-$footer = "<div id='footer' style='background-color:black;border-radius:10px;padding:10px;margin:5px;color:white;position:fixed;bottom:0px;width:97%;z-index:99;'><a style='text-decoration:none;color:white;' href='http://nineteeneleven.info' target='_blank' onmouseover=\"this.style.backgroundColor='red'\" onmouseout=\"this.style.backgroundColor=''\">Donations Control 2.0 Powered by NineteenEleven</a></div>";
+$footer = "<div id='footer' style='background-color:black;border-radius:10px;padding:10px;margin:5px;color:white;position:fixed;bottom:0px;width:97%;z-index:99;'><a style='text-decoration:none;color:white;' href='http://nineteeneleven.info' target='_blank' onmouseover=\"this.style.backgroundColor='red'\" onmouseout=\"this.style.backgroundColor=''\">Donations Control 2.0.4 Powered by NineteenEleven</a></div>";
 ?>

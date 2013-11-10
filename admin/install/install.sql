@@ -28,14 +28,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `cache` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `steamid` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
-  `avatar` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
-  `avatarmedium` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
-  `avatarfull` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
-  `personaname` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `timestamp` varchar(32) CHARACTER SET latin1 DEFAULT NULL,
-  `steamid64` varchar(64) CHARACTER SET latin1 DEFAULT NULL,
-  `steam_link` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
+  `steamid` varchar(30) DEFAULT NULL,
+  `avatar` varchar(256) DEFAULT NULL,
+  `avatarmedium` varchar(256) DEFAULT NULL,
+  `avatarfull` varchar(256) DEFAULT NULL,
+  `personaname` varchar(255) DEFAULT NULL,
+  `timestamp` varchar(32) DEFAULT NULL,
+  `steamid64` varchar(64) DEFAULT NULL,
+  `steam_link` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -47,12 +47,12 @@ CREATE TABLE IF NOT EXISTS `cache` (
 
 CREATE TABLE IF NOT EXISTS `custom_chatcolors` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
-  `identity` varchar(32) CHARACTER SET latin1 NOT NULL,
-  `flag` char(1) CHARACTER SET latin1 DEFAULT NULL,
-  `tag` varchar(32) CHARACTER SET latin1 DEFAULT NULL,
-  `tagcolor` varchar(8) CHARACTER SET latin1 DEFAULT NULL,
-  `namecolor` varchar(8) CHARACTER SET latin1 DEFAULT NULL,
-  `textcolor` varchar(8) CHARACTER SET latin1 DEFAULT NULL,
+  `identity` varchar(32) NOT NULL,
+  `flag` char(1) DEFAULT NULL,
+  `tag` varchar(32) DEFAULT NULL,
+  `tagcolor` varchar(8) DEFAULT NULL,
+  `namecolor` varchar(8) DEFAULT NULL,
+  `textcolor` varchar(8) DEFAULT NULL,
   PRIMARY KEY (`index`),
   UNIQUE KEY `identity` (`identity`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -65,19 +65,19 @@ CREATE TABLE IF NOT EXISTS `custom_chatcolors` (
 
 CREATE TABLE IF NOT EXISTS `donors` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `steam_id` varchar(30) CHARACTER SET latin1 NOT NULL,
-  `sign_up_date` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `email` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
-  `renewal_date` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
-  `current_amount` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `total_amount` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
-  `expiration_date` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `steam_link` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
-  `notes` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
-  `activated` varchar(1) CHARACTER SET latin1 DEFAULT '0',
-  `txn_id` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
-  `tier` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
+  `steam_id` varchar(30) NOT NULL,
+  `sign_up_date` varchar(10) NOT NULL,
+  `email` varchar(60) DEFAULT NULL,
+  `renewal_date` varchar(10) DEFAULT NULL,
+  `current_amount` varchar(10) NOT NULL,
+  `total_amount` varchar(10) DEFAULT NULL,
+  `expiration_date` varchar(10) NOT NULL,
+  `steam_link` varchar(200) DEFAULT NULL,
+  `notes` varchar(200) DEFAULT NULL,
+  `activated` varchar(1) DEFAULT '0',
+  `txn_id` varchar(128) DEFAULT NULL,
+  `tier` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -89,14 +89,14 @@ CREATE TABLE IF NOT EXISTS `donors` (
 
 CREATE TABLE IF NOT EXISTS `player_tracker` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `steamid` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `playername` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `playerip` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `servertype` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `serverip` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `serverport` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `geoipcountry` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `status` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `steamid` varchar(255) NOT NULL,
+  `playername` varchar(255) NOT NULL,
+  `playerip` varchar(255) NOT NULL,
+  `servertype` varchar(255) NOT NULL,
+  `serverip` varchar(255) NOT NULL,
+  `serverport` varchar(255) NOT NULL,
+  `geoipcountry` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `steamid` (`steamid`),
   KEY `playername` (`playername`),
