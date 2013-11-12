@@ -6,7 +6,7 @@ require_once 'config.php';
 class language{
 
     public function __construct(){
-        $this->dir = str_replace("includes/class_lib.php", "", __FILE__,$c). "tanslations/";
+        $this->dir = str_replace("includes/class_lib.php", "", __FILE__,$c). "translations/";
         if ($c==0) {
             $this->dir = str_replace("includes\class_lib.php", "", __FILE__, $c). "translations\\";
         }
