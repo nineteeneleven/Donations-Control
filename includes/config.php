@@ -103,6 +103,7 @@ define('CCC', true); //https://forums.alliedmods.net/showpost.php?p=1738314&post
 date_default_timezone_set('America/New_York'); //http://php.net/manual/en/timezones.php
 define('cache_time', '15'); //days to resolve cache for information from steam, mainly the avatar image, and display name.
 define('PLAYER_TRACKER', true); //use player tracker to automatically fetch steam ids?
+define("DEFAULT_LANGUAGE", "en-us"); // name of file in translation folder. dont add .json
 define('API_KEY' , 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
 define("STATS", true);
 ////////////////////////

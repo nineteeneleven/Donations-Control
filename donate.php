@@ -2,11 +2,10 @@
 define('NineteenEleven', TRUE);
 require_once'includes/config.php';
 require_once 'includes/class_lib.php';
-$json = file_get_contents('translations/en-us.json');
-$lang = json_decode($json);
+$language = new language;
+$lang = $language->getLang(DEFAULT_LANGUAGE);
 $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB);
 $tools = new tools;
-//$SteamQuery = new SteamQuery;
 $ConvertID = new SteamIDConvert;
 $steamid_user =$tools->cleanInput($_REQUEST['steamid_user']);
 
@@ -156,18 +155,18 @@ echo'
                 printf("<p>". $lang->donate[0]->msg5, "5" ,"31");
                 if(TIERED_DONOR){
                     if ($tier=="1") {
-                        printf($lang->donate[0]->msg6 ." ",$group1['name']);
+                        printf(" ". $lang->donate[0]->msg6." ",$group1['name']. "</p>");
                     }else{
-                        printf($lang->donate[0]->msg6 ." ",$group2['name']);
+                        printf(" ". $lang->donate[0]->msg6." ",$group2['name']. "</p>");
                     }
                 }else{
-                    echo ". ";
+                    echo ".</p> ";
                 }
                 printf($lang->donate[0]->msg7.".</p>",date('l F j Y',$sign_up_date), date('l F j Y',$expire));
                 if(TIERED_DONOR && $tier =="2" && CCC){
                     echo "<p>".$lang->donate[0]->msg8."<p>";
                     echo "<input type=\"hidden\" name=\"os0\" value=\"nameColor\"><input type=\"hidden\" name=\"os1\" value=\"chatColor\">";
-                    echo "<p><input class='color' name='on0' value='#33CC99' id='colorInput'>".$lang->misc[0]->msg3."<input class='color' name='on1' value='#990000' id='colorInput'>".$lang->misc[0]->msg2."</p>";
+                    echo "<p><input class='color' name='on0' value='#33CC99' id='colorInput'>".$lang->misc[0]->msg3." <input class='color' name='on1' value='#990000' id='colorInput'>".$lang->misc[0]->msg2."</p>";
                 }
             	echo "<p>".$lang->donate[0]->msg9."</p>";
                 echo "</h3>";

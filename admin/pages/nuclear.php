@@ -12,12 +12,13 @@ if (isset($_POST['COMMAND'])) {
 	$query = $_POST['COMMAND'];
 	
 	if(!$sb->queryServersResponse($query)){
-		echo "<h1 class='error>Something went wrong querying the servers</h1>";
+		echo "<h1 class='error>".$lang->admin[0]->sq4."</h1>";
 	}
 	if (STATS) {
 		@$log->stats("SQ");
 	}
-	$log->logAction($_SESSION['username']." sent command '".$query."' to all servers");
+	$log->logAction(sprintf($lang->sysmsg[0]->nuclear, $_SESSION['username'], $query));
+
 	unset($sb);
 }else{
 	echo "<h3><u>".$lang->admin[0]->sq1."</u></h3>";

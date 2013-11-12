@@ -3,6 +3,22 @@
 if(!defined('NineteenEleven')){die('Direct access not premitted');}
 require_once 'config.php';
 
+class language{
+
+    public function __construct(){
+        $this->dir = str_replace("includes/class_lib.php", "", __FILE__,$c). "tanslations/";
+        if ($c==0) {
+            $this->dir = str_replace("includes\class_lib.php", "", __FILE__, $c). "translations\\";
+        }
+    }
+    public function getLang($lang){
+        $json = file_get_contents($this->dir . $lang . '.json');
+        return json_decode($json);
+    }
+
+
+}
+
 class log{
 
     public function __construct(){

@@ -105,11 +105,11 @@ unset($ConvertID);
 unset($tools);
 unset($SteamQuery);
 unset($sb);
-$_SESSION['message'] = "<h1 class='success'>{$username} Entered Successfully</h1>";
+$_SESSION['message'] = "<h1 class='success'>".sprintf($lang->sysmsg[0]->successenter)."</h1>";
 if (STATS) {
 	@$log->stats("ME");
 }
-$log->logAction($_SESSION['username']." manually entered $username");
+$log->logAction(sprintf($lang->logmsg[0]->manualentry,$_SESSION['username'], $username));
 header("Location: show_donations.php");
 }
 ?>

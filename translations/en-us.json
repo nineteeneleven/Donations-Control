@@ -32,7 +32,7 @@
 		}
 	],
 	"admin":[{
-		"home" : "home",
+		"home" : "Home",
 		"manualentry" : "Manual Entry",
 		"serverquery" : "Query Servers",
 		"actionlog" : "Action Logs",
@@ -68,12 +68,22 @@
 		"sq" : "Server Query",
 		"sq1" : "About this tool",
 		"sq3" : "There are no limitations to the command you can send. So be careful.",
-		"sq2" : "This tool will send the command you specify to all of the game servers you have connected to SourceBans."
+		"sq2" : "This tool will send the command you specify to all of the game servers you have connected to SourceBans.",
+		"sq4" : "Something went wrong querying the servers"
 		}],
 	"sysmsg":[{
-		"successedit" : "%s edited successfully",
-		"failrehash" : "Server rehash Failed",
-		"successadd" : "Entered Successfully"
+		"successedit" : "%s edited successfully.",
+		"failrehash" : "Server rehash failed.",
+		"succrehash" : "Rehashed all servers",
+		"updatefail" : "FAILED TO UPDATE USER.",
+		"successenter" : "%s entered successfully.",
+		"deleted" : "Steam ID %s has been removed completly from the system."
+		}],
+	"logmsg":[{
+		"manualentry" : "%s manually entered %s.",
+		"edit" : "%s edited %s.",
+		"nuclear" : "%s sent command %s to all servers.",
+		"deleted" : "%s deleted %s."
 		}],
 	"error" :[{
 		"msg1" : "There was a problem removing %s from sourcebans."

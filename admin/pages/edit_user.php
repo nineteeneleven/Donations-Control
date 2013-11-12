@@ -105,21 +105,22 @@ if (isset($_POST['edit_user_form'])) {
 	}
 
 	$insert_sql="UPDATE `donors` SET `username` = '{$username}', `steam_id` = '{$steam_id}', `sign_up_date` = '{$sign_up_date}', `email` = '{$email}', `renewal_date` = '{$renewal_date}', `current_amount` = '{$current_amount}', `total_amount` = '{$total_amount}', `expiration_date` = '{$expiration_date}', `steam_link` = '{$steam_link}', `notes` = '{$notes}', `activated` = '{$activated}', `tier` = '{$tier}' WHERE `user_id` = '{$user_id}';";
-	$mysqliD->query($insert_sql) or die("<h1 class='error'>FAILED TO UPDATE USER</h1><br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>". $log->logError($mysqliD->error. " " . $mysqliD->errno ." Line Number: " . __LINE__));
+	$mysqliD->query($insert_sql) or die("<h1 class='error'>".$lang->sysmsg[0]->updatefail."</h1><br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>". $log->logError($mysqliD->error. " " . $mysqliD->errno ." Line Number: " . __LINE__));
 
 	if($rehash){
 		if(!$sb->queryServers('sm_reloadadmins')){
-			$_SESSION['message'] = "<h1 class='success'>{$username} edited successfully</h1><br /><h1 class='error'> Server rehash Failed</h1>";
-			$log->logAction($_SESSION['username'] . " edited $username");
+			$_SESSION['message'] = "<h1 class='success'>".sprintf($lang->sysmsg[0]->successedit, $username)."</h1><br /><h1 class='error'> ".$lang->sysmsg[0]->failrehash."</h1>";
+			$log->logAction(sprintf($lang->logmsg[0]->edit , $_SESSION['username'], $username));
 			$log->logError('Server rehash failed');
 		}else{
-			$_SESSION['message'] = printf("<h1 class='success'>{$username} edited successfully</h1>", $username);
-			$log->logAction($_SESSION['username']. " edited $username");
+			$_SESSION['message'] = printf("<h1 class='success'>".sprintf($lang->sysmsg[0]->successedit, $username)."</h1>", $username);
+			$log->logAction(sprintf($lang->logmsg[0]->edit , $_SESSION['username'], $username));
+			
 			$log->logAction('Rehashed all servers');
 		}
 	}else{
-		$_SESSION['message'] = "<h1 class='success'>{$username} edited successfully</h1>";
-		$log->logAction($_SESSION['username']. " edited $username");		
+		$_SESSION['message'] = "<h1 class='success'>".sprintf($lang->sysmsg[0]->successedit, $username)."</h1>";
+		$log->logAction(sprintf($lang->logmsg[0]->edit , $_SESSION['username'], $username));		
 	}
 	if (STATS) {
 		@$log->stats("EU");

@@ -12,10 +12,13 @@ define('adminPage', TRUE);
 require_once '../includes/config.php';
 require_once '../includes/class_lib.php';
 require_once '../scripts/rcon_code.php';
-$json = file_get_contents('../translations/en-us.json');
-$lang = json_decode($json);
 $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 $log = new log;
+$language = new language;
+$lang = $language->getLang(DEFAULT_LANGUAGE);
+// if (isset($)) {
+// 	# code...
+// }
 echo '<html>';
 echo '<meta http-equiv="Content-Type"content="text/html;charset=UTF8">';
 echo '<head>';
@@ -66,9 +69,9 @@ if (isset($_GET['logout'])) {
 	$mysqliD->query($delete_sql) or die("<h1 class='error'>Failed to delete $steam_id from donations database.</h1>" . $log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 	if ($sb->removeDonor($steam_id,$tier)) {
 		if($sb->queryServers('sm_reloadadmins')){
-			$log->logAction('Rehashed all servers');
+			$log->logAction($log->sysmsg[0]->succrehash);
 		}else{
-			$log->logError('Failed to rehash servers.');
+			$log->logError($log->sysmsg[0]->failrehash);
 		}
 	}else{
 		printf("<h1 class='error'>".$lang->error[0]->msg1."</h1>",$steam_id);
@@ -81,9 +84,10 @@ if (isset($_GET['logout'])) {
 			$log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__);
 		}
 	}
-	$_SESSION['message']="<h3 class='success'>Steam ID {$steam_id} has been removed completly from the system.</h3>";
+	$_SESSION['message']="<h3 class='success'>".sprintf($lang->sysmsg[0]->deleted , $steam_id)."</h3>";
 
-	$log->logAction($_SESSION['steam_id'] ." deleted $steam_id");
+	$log->logAction(sprintf($lang->logmsg[0]->deleted , $_SESSION['steam_id'], $steam_id));
+
 
 	header('location: show_donations.php');
 
