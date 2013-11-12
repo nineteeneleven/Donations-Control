@@ -30,6 +30,53 @@
 			"msg8" : "Please select the colors and tag you would like to use for your in-game chat.",
 			"msg9" : "If this is you, and you agree please click below, to proceed with your donation, you will be redirected to PayPal to process your contribution."
 		}
-	]
+	],
+	"admin":[{
+		"home" : "home",
+		"manualentry" : "Manual Entry",
+		"serverquery" : "Query Servers",
+		"actionlog" : "Action Logs",
+		"errorlog" : "Error Logs",
+		"logout" : "Log Out",
+		"title" : "Donor List",
+		"steamname" : "Steam Name",
+		"steamid" : "Steam ID",
+		"info" : "info",
+		"sud" : "Sign up Date",
+		"email" : "email",
+		"rd" : "Renewal Date",
+		"current" : "Current",
+		"total" : "Total",
+		"ed" : "Expiration Date",
+		"tier" : "Tier",
+		"notes" : "Notes",
+		"steamlink" : "Steam Link",
+		"edituser" : "Edit User",
+		"searchmsg" : "Search for Name, SteamID, or Email",
+		"hide" : "Hide Expired",
+		"show" : "Show Expired",
+		"clear" : "Clear",
+		"perkson" : "Perks On",
+		"perksoff" : "Perks Off",
+		"perksactivated" : "Perks Activated",
+		"addperks" : "Add Perks",
+		"perksoff" : "Perks off",
+		"noperks" : "No Perks",
+		"snotes" : "Any special notes here",
+		"delconf" : "Are you sure you want to delete this user, and remove them from all databases?  This is permanent and cant be un-done!",
+		"semail" : "name@domain.com",
+		"sq" : "Server Query",
+		"sq1" : "About this tool",
+		"sq3" : "There are no limitations to the command you can send. So be careful.",
+		"sq2" : "This tool will send the command you specify to all of the game servers you have connected to SourceBans."
+		}],
+	"sysmsg":[{
+		"successedit" : "%s edited successfully",
+		"failrehash" : "Server rehash Failed",
+		"successadd" : "Entered Successfully"
+		}],
+	"error" :[{
+		"msg1" : "There was a problem removing %s from sourcebans."
+		}]
 		
 }

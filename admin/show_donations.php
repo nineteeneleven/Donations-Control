@@ -12,6 +12,8 @@ define('adminPage', TRUE);
 require_once '../includes/config.php';
 require_once '../includes/class_lib.php';
 require_once '../scripts/rcon_code.php';
+$json = file_get_contents('../translations/en-us.json');
+$lang = json_decode($json);
 $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
 $log = new log;
 echo '<html>';
@@ -34,12 +36,12 @@ echo '</head>';
 echo '<body>';
 echo '<nav>';
 echo '<ul>';
-echo '<li><a href="show_donations.php" id="List">Home</a></li>';
-echo '<li><a href="show_donations.php?manual_entry" id="manualEntryButton"> Manual Entry </a></li>';
-echo '<li><a href="show_donations.php?server_query" id="server_query"> Query Servers </a></li>';;
-echo '<li><a href="show_donations.php?action_log" id="action">Action Logs</a></li>';
-echo '<li><a href="show_donations.php?error_log" id="errorLog">Error Logs</a></li>';
-echo '<li><a href="show_donations.php?logout" id="logout">Log out</a></li>';
+echo '<li><a href="show_donations.php" id="List">'.$lang->admin[0]->home .'</a></li>';
+echo '<li><a href="show_donations.php?manual_entry" id="manualEntryButton"> '.$lang->admin[0]->manualentry.' </a></li>';
+echo '<li><a href="show_donations.php?server_query" id="server_query"> '.$lang->admin[0]->serverquery .'</a></li>';;
+echo '<li><a href="show_donations.php?action_log" id="action">'.$lang->admin[0]->actionlog .'</a></li>';
+echo '<li><a href="show_donations.php?error_log" id="errorLog">'.$lang->admin[0]->errorlog .'</a></li>';
+echo '<li><a href="show_donations.php?logout" id="logout">'.$lang->admin[0]->logout .'</a></li>';
 echo '</ul>';
 echo '</nav>';
 if (isset($_GET['logout'])) {
@@ -69,7 +71,7 @@ if (isset($_GET['logout'])) {
 			$log->logError('Failed to rehash servers.');
 		}
 	}else{
-		echo "<h1 class='error'>There was a problem removing {$steam_id} from sourcebans.</h1>";
+		printf("<h1 class='error'>".$lang->error[0]->msg1."</h1>",$steam_id);
 		$log->logError('Unable to remove $steam_id from sourcebans.');
 	}
 	unset($sb);

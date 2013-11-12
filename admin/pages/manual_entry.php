@@ -116,33 +116,36 @@ header("Location: show_donations.php");
 		<form action='show_donations.php' method='POST' id='manual_entry_form'>
 			<fieldset id='edit_user_form'>
 				<table>
+				<?php
+				echo "
 					<tr>
-						<th>Steam ID</th>
-						<th>Sign up Date</th>
-						<th>email</th>
-						<th>Renewal Date</th>
-						<th>Current Amount</th>
-						<th>Total Amount</th>
-						<th>Expiration Date</th>
-						<th>Notes</th>
-					</tr>
+						<th>".$lang->admin[0]->steamid."</th>
+						<th>".$lang->admin[0]->sud."</th>
+						<th>".$lang->admin[0]->email."</th>
+						<th>".$lang->admin[0]->rd."</th>
+						<th>".$lang->admin[0]->current."</th>
+						<th>".$lang->admin[0]->total."</th>
+						<th>".$lang->admin[0]->ed."</th>
+						<th>".$lang->admin[0]->notes."</th>
+					</tr>";
+					?>
 					<tr>
 				        <td><input name='steam_id' placeholder="STEAM_X:X:XXXXXX" type="text" required='true' title="You can use any variation of a Steam ID here."/></td>
 				        <td><input name='sign_up_date' placeholder="DD/MM/YY" type="text" required='true' class='date'/></td>
-				        <td><input name='email' placeholder="name@domain.com" type="text" /></td>
+				        <td><input name='email' placeholder="<?php echo $lang->admin[0]->semail; ?>" type="text" /></td>
 				        <td><input name='renewal_date' placeholder="DD/MM/YY" type="text" class='date'/></td>
 				        <td><input name='current_amount' placeholder="5" type="text" required='true' /></td>
 				        <td><input name='total_amount' placeholder="5" type="text" required='true' /></td>
 				        <td><input name='expiration_date' placeholder="DD/MM/YY" type="text" required='true' class='date'/></td>
-				        <td><textarea name='notes' placeholder='any special notes here'></textarea></td>
+				        <td><textarea name='notes' placeholder='<?php echo $lang->admin[0]->snotes; ?>'></textarea></td>
 				        <input type="hidden" name="manual_entry" value="1">
 			        <tr>
 			    </table>   
 			    <br />
 			    <br />	
 			    	<div id='activSwitch'>
-			        	<input type="radio" name='activated' value='1' id='perkRadio' checked /> Perks On 
-			        	<input type="radio" name='activated' value='2' id='perkRadio' /> Perks Off
+			        	<input type="radio" name='activated' value='1' id='perkRadio' checked /><?php echo $lang->admin[0]->perkson; ?>
+			        	<input type="radio" name='activated' value='2' id='perkRadio' /> <?php echo $lang->admin[0]->perksoff; ?>
 			        </div>
 			        
 			     <?php

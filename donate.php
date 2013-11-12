@@ -2,6 +2,8 @@
 define('NineteenEleven', TRUE);
 require_once'includes/config.php';
 require_once 'includes/class_lib.php';
+$json = file_get_contents('translations/en-us.json');
+$lang = json_decode($json);
 $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB);
 $tools = new tools;
 //$SteamQuery = new SteamQuery;
@@ -27,24 +29,25 @@ if($cacheQuery->num_rows > 0) {
     $steam_id=$userInfo['steamid'];
 
   }else{
-    //The only way a user can get here, is with a direct link.
-    $userInfo = $ConvertID->SteamIDCheck($steamid_user);
+    //user not in cache
+    $userInfo = $ConvertID->SteamIDCheck($steamid_user) or cantFindUser();
     $userInfo['XMLlink'] = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . API_KEY . "&format=xml&steamids=". $userInfo['steamID64'];
     $steam_link = $userInfo['steam_link'];
 }
 
 
-function dun_fucked_up(){
-    if ($tools->checkOnline('steamcommunity.com')) {
-        die("<h3>The Steam Community is currently down,".
-        "<br />We were unable to get your ID based on what you entered.".
-        "<br />Please enter your STEAM:0:0:00000 ID or wait untill Steam comes back online" .
-        "<br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>");
+function cantFindUser(){
+    global $tools, $lang;
+    if (!$tools->checkOnline('steamcommunity.com')) {
+        die("<h3>". $lang->steamdown[0]->msg1.
+        "<br />".$lang->steamdown[0]->msg2.
+        "<br />".$lang->steamdown[0]->msg3.
+        "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
     }else{
-    die("<h3>Sorry we were unable to get your Steam ID.".
-        "<br />You probably entered an incorrect Steam ID".
-        "<br />Please check and make sure you entered a valid Steam ID and try again." .
-        "<br /><a href='javascript:history.go(-1);'>Click here to go back</a></h3>");
+    die("<h3>".$lang->steamdown[0]->msg4.
+        "<br />". $lang->steamdown[0]->msg5.
+        "<br />".$lang->steamdown[0]->msg6.
+        "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
     }
 }
 ///////////////////////
@@ -88,11 +91,11 @@ if(!$useCache){
 }
 $username = $tools->cleanUser($username);
 //check if current donor
-
-$result = $mysqliD->query("SELECT expiration_date FROM donors WHERE steam_id = ".$userInfo['steamid'].";");
-if($result){
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-    $expiration_date = $row['expiration_date'];
+if($result = $mysqliD->query("SELECT expiration_date FROM donors WHERE steam_id = '".$userInfo['steamid']."';")){
+    if($result->num_rows > 0){
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $expiration_date = $row['expiration_date'];
+    }
 }
  if (isset($expiration_date)) {
     $return_donor = true;
@@ -131,15 +134,15 @@ echo'
             border-radius: 10px;}
     </style>
 </head>
-    <body>
-    <title>DONATE!</title>
-    <div class="content">
-        <center>';
+    <body>';
+    echo "<title>". $lang->donate[0]->msg1 ."</title>";
+    echo '<div class="content"><center>';
             if($return_donor===true){
-                echo "<p id='welcome_back'>Welcome back " . $username . " your current donor perks expire on ". date('l F j Y',$expiration_date) ."</p>";} 
+                printf("<p id='welcome_back'>" . $lang->donate[0]->msg2 ." ". date('l F j Y',$expiration_date) ."</p>" , $username);
+            } 
                 echo "<br />";
                 if ($amountSmall) {
-                    exit("<h3 id='sorry'>Sorry, the minimum donation that can be processed is $5. Please adjust accordingly</h3>");
+                    exit("<h3 id='sorry'>".$lang->donate[0]->msg3."</h3>");
                 }
    if (PP_SANDBOX) {
             print('<form id="donate" name="_xclick" action="https://sandbox.paypal.com/cgi-bin/webscr" method="post" >');
@@ -148,29 +151,26 @@ echo'
             print('<form id="donate" name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post" >');
             print('<input type="hidden" name="business" value="' . PP_EMAIL . '">');
         }            
-	            echo "<h1> Please make sure this is you!</h1><br/ >";
+	            echo "<h1>".$lang->donate[0]->msg4."</h1><br/ >";
 	            echo "<img src='{$avatarfull}' /><br /> <h1>  <a href='{$steam_link}' target='_blank'>{$username}</a><h1><hr /><h3>";
-                echo "<p>You wish to donate $".$amount.". For your generosity, you will receive ".$days_purchased." days of donor perks";
+                printf("<p>". $lang->donate[0]->msg5, "5" ,"31");
                 if(TIERED_DONOR){
                     if ($tier=="1") {
-                        echo " on the " . $group1['name']." level. ";
+                        printf($lang->donate[0]->msg6 ." ",$group1['name']);
                     }else{
-                        echo " on the " . $group2['name']." level. ";
+                        printf($lang->donate[0]->msg6 ." ",$group2['name']);
                     }
                 }else{
                     echo ". ";
                 }
-                echo "Beginning on ". date('l F j Y',$sign_up_date). " and ending on ". date('l F j Y',$expire).".</p>";
-                //https://www.paypal.com/cgi-bin/webscr?cmd=_pdn_xclick_options_help_outside#
+                printf($lang->donate[0]->msg7.".</p>",date('l F j Y',$sign_up_date), date('l F j Y',$expire));
                 if(TIERED_DONOR && $tier =="2" && CCC){
-                    echo "<p> Please select the colors and tag you would like to use for your in-game chat.<p>";
+                    echo "<p>".$lang->donate[0]->msg8."<p>";
                     echo "<input type=\"hidden\" name=\"os0\" value=\"nameColor\"><input type=\"hidden\" name=\"os1\" value=\"chatColor\">";
-                    echo "<p><input class='color' name='on0' value='#33CC99' id='colorInput'>Name Color <input class='color' name='on1' value='#990000' id='colorInput'>Chat Color</p>";
+                    echo "<p><input class='color' name='on0' value='#33CC99' id='colorInput'>".$lang->misc[0]->msg3."<input class='color' name='on1' value='#990000' id='colorInput'>".$lang->misc[0]->msg2."</p>";
                 }
-            	echo "<p> If this is you, and you agree please click below, to proceed with your donation, you will be redirected to PayPal to process your contribution.</p>";
+            	echo "<p>".$lang->donate[0]->msg9."</p>";
                 echo "</h3>";
-
-     
             print('<input type="hidden" name="cmd" value="_xclick">');
             print('<input type="hidden" name="no_note" value="1">');
             print('<input type="hidden" name="amount" value="' . $amount . '">');

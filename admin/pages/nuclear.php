@@ -1,7 +1,7 @@
 <div class='content'>
 
         <form action='show_donations.php?server_query' method='post' name='CUSTOMCOMMAND'>
-            <font class='info'>Server Query:</font><br>  
+            <font class='info'><?php echo $lang->admin[0]->sq; ?></font><br>  
             <input type='text' size='40' name='COMMAND' class='searchBox' /><input type='submit' value='Submit'>
         </form>          
 
@@ -20,9 +20,9 @@ if (isset($_POST['COMMAND'])) {
 	$log->logAction($_SESSION['username']." sent command '".$query."' to all servers");
 	unset($sb);
 }else{
-	echo "<h3><u>About this tool</u></h3>";
-	echo "<p>This tool will send the command you specify to all of the game servers you have connected to SourceBans.<p>";
-	echo "<p>There are no limitations to the command you can send. So be careful.</p>";
+	echo "<h3><u>".$lang->admin[0]->sq1."</u></h3>";
+	echo "<p>".$lang->admin[0]->sq2."<p>";
+	echo "<p>".$lang->admin[0]->sq3."</p>";
 }
 ?>
 

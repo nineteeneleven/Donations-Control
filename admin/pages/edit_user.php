@@ -113,7 +113,7 @@ if (isset($_POST['edit_user_form'])) {
 			$log->logAction($_SESSION['username'] . " edited $username");
 			$log->logError('Server rehash failed');
 		}else{
-			$_SESSION['message'] = "<h1 class='success'>{$username} edited successfully</h1>";
+			$_SESSION['message'] = printf("<h1 class='success'>{$username} edited successfully</h1>", $username);
 			$log->logAction($_SESSION['username']. " edited $username");
 			$log->logAction('Rehashed all servers');
 		}
@@ -168,13 +168,13 @@ if($result){
 		<?php
 			if(TIERED_DONOR){
 				echo 'function delete_confirm(steam_id,tier){
-					if (confirm("Are you sure you want to delete this user, and remove them from all databases? \n This is permanent and can\'t be un-done!")){
+					if (confirm("'.$lang->admin[0]->delconf.'")){
 						window.location = "show_donations.php?delete_user=1&steam_id=" + steam_id + "&tier=" + tier;
 					}
 				};';
 			}else{
 				echo 'function delete_confirm(steam_id){
-					if (confirm("Are you sure you want to delete this user, and remove them from all databases? \n This is permanent and can\'t be un-done!")){
+					if (confirm("'.$lang->admin[0]->delconf.'")){
 						window.location = "show_donations.php?delete_user=1&steam_id=" + steam_id;
 					}
 				};';
@@ -189,18 +189,21 @@ if($result){
 		<form action='show_donations.php' method='POST' id='edit_user_form'>
 			<fieldset id='edit_user_form'>
 				<table>
+				<?php
+				echo "
 					<tr>
-						<th>Steam Name</th>
-						<th>Steam ID</th>
-						<th>Sign up Date</th>
-						<th>email</th>
-						<th>Renewal Date</th>
-						<th>Current Amount</th>
-						<th>Total Amount</th>
-						<th>Expiration Date</th>
-						<th>Steam link</th>
-						<th>Notes</th>
-					</tr>
+						<th>".$lang->admin[0]->steamname."</th>
+						<th>".$lang->admin[0]->steamid."</th>
+						<th>".$lang->admin[0]->sud."</th>
+						<th>".$lang->admin[0]->email."</th>
+						<th>".$lang->admin[0]->rd."</th>
+						<th>".$lang->admin[0]->current."</th>
+						<th>".$lang->admin[0]->total."</th>
+						<th>".$lang->admin[0]->ed."</th>
+						<th>".$lang->admin[0]->steamlink."</th>
+						<th>".$lang->admin[0]->notes."</th>
+					</tr>";
+					?>
 					<tr>
 						<td><input name='username' value="<?php echo $username ?>" type="text" /></td>
 				        <td><input name='steam_id' value="<?php echo $steam_id?>" type="text" /></td>
@@ -222,8 +225,8 @@ if($result){
 			    <br />
 			    <br />	
 			        	<input name='user_id' value="<?php echo $user_id ?>" type="hidden" />
-			        	<input type="radio" name='activated' value='1' <?php if($activated==='1'){echo "checked /> Perks Activated";} else {echo "/> Add Perks";} ?> 
-			        	<input type="radio" name='activated' value='2' <?php if($activated==='2'){echo "checked /> Perks Off";} else {echo "/> No Perks";} ?> 
+			        	<input type="radio" name='activated' value='1' <?php if($activated==='1'){echo "checked />" .$lang->admin[0]->perksactivated;} else {echo "/>" .$lang->admin[0]->addperks;} ?> 
+			        	<input type="radio" name='activated' value='2' <?php if($activated==='2'){echo "checked />" .$lang->admin[0]->perksoff;} else {echo "/>" .$lang->admin[0]->noperks;} ?> 
 			     <?php
 			     if(TIERED_DONOR){
 			     		if($tier =="1"){

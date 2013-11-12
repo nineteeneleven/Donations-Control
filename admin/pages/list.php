@@ -10,19 +10,19 @@ if (!defined('NineteenEleven')) {
 	echo '
 	<div id="searchBox">
 		<form action="show_donations.php"  method="POST" id="searchForm">
-			<input type="text" size="30" placeholder="Search for Name, SteamID, or Email" id="searchInput" name="searchInput" /><input type="image" src="images/search-button.png" id="searchButton" form="searchForm" />
+			<input type="text" size="30" placeholder="'.$lang->admin[0]->searchmsg.'" id="searchInput" name="searchInput" /><input type="image" src="images/search-button.png" id="searchButton" form="searchForm" />
 		</form>';
 
 
 		if(isset($_POST['show_expired'])){
 		echo "	
 		<form action='show_donations.php' method='POST' id='clear_expired'>
-			<input id='clearExpired' type='submit' value='Hide Expired' form='clear_expired' />
+			<input id='clearExpired' type='submit' value='".$lang->admin[0]->hide."' form='clear_expired' />
 		</form>";		
 	}else{
 		echo "
 		<form action='show_donations.php' method='POST' id='show_expired'>
-			<input id='clearExpired' type='submit' value='Show Expired' form='show_expired' name='show_expired'/>
+			<input id='clearExpired' type='submit' value='".$lang->admin[0]->show."' form='show_expired' name='show_expired'/>
 		</form>";
 	}
 	echo "
@@ -42,7 +42,7 @@ if (!defined('NineteenEleven')) {
 
 		$sql = "SELECT * FROM `donors` WHERE username LIKE '%" . $search . "%' OR steam_id LIKE '%" . $search . "%' OR email LIKE '%" . $search . "%';";
 
-		print("<a href='show_donations.php' id='clearSearch'> Clear </a>");
+		print("<a href='show_donations.php' id='clearSearch'> ".$lang->admin[0]->clear." </a>");
 
 	}elseif (isset($_POST['show_expired'])){
 
@@ -57,12 +57,12 @@ if (!defined('NineteenEleven')) {
 	unset($sql);
 	//create the table
 	echo "<table border='2'>";
-	echo "<tr><th>Steam Name</th><th>Info</th><th>Sign up Date</th><th>email</th><th>Renewal Date</th><th>Current</th><th>Total</th><th>Expiration Date</th>";
+	echo "<tr><th>".$lang->admin[0]->steamname."</th><th>".$lang->admin[0]->info."</th><th>".$lang->admin[0]->sud."</th><th>".$lang->admin[0]->email."</th><th>".$lang->admin[0]->rd."</th><th>".$lang->admin[0]->current."</th><th>".$lang->admin[0]->total."</th><th>".$lang->admin[0]->ed."</th>";
 	if (TIERED_DONOR) {
-		echo "<th>Tier</th>";
+		echo "<th>".$lang->admin[0]->tier."</th>";
 	}
 
-	echo "<th>Notes</th></tr>";
+	echo "<th>".$lang->admin[0]->notes."</th></tr>";
 	//loop through rows and print values to the table
 	while ($db_field = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -122,7 +122,7 @@ if (!defined('NineteenEleven')) {
 	}
 
 		echo "</td><td>". $db_field['notes']
-		. "</td><td><a href='?edit_user&user_id=".$db_field['user_id']."' id='editUserButton'>Edit User</a>"
+		. "</td><td><a href='?edit_user&user_id=".$db_field['user_id']."' id='editUserButton'>".$lang->admin[0]->edituser."</a>"
 		. "</td>";
 		echo "</tr>";
 

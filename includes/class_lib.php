@@ -259,7 +259,11 @@ class SteamQuery
         $API_link = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . API_KEY . "&format=json&steamids=" . $steamID64;
         $json = file_get_contents($API_link);
         $json_output=json_decode($json);
-        return $json_output;
+        if(empty($json_output->response->players[0])){
+            return false;
+        }else{        
+            return $json_output;
+        }
     }
 
     public function GetFriendsList($steamID64){
@@ -300,9 +304,11 @@ class SteamQuery
     }   
     public function ConvertVanityURL($playerName){
         $API_link = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" . API_KEY . "&format=json&vanityurl=" . $playerName;
-        $json = file_get_contents($API_link);
+        if(!$json = file_get_contents($API_link)){
+            return false;
+        }
         $query=json_decode($json);
-        if ($query->response->success === 1) {
+        if ($query->response->success == 1) {
             $ID64=$query->response->steamid;
             return $ID64;
         }else{
@@ -385,14 +391,19 @@ class SteamIDConvert
 
     function SteamIDCheck($steamiduser){
         $steamiduser = rtrim($steamiduser , "/" ); // remove trailing backslash
-
+        $SteamQuery = new SteamQuery;
         //Look for STEAM_0:1:6656620 variation
         if(preg_match("/^STEAM_/i", $steamiduser)){
             $steamId64= $this->IDto64($steamiduser);
             $steam_link = $this->getSteamLink($steamId64);
             $steam_id = strtoupper($steamiduser);
             $steamArray = array('steamid'=>$steam_id, 'steamID64' =>$steamId64, 'steam_link'=>$steam_link);
-            return $steamArray;
+            if ($SteamQuery->GetPlayerSummaries($steamArray['steamID64'])) {
+                return $steamArray;
+            }else{
+                return false;
+            }
+            
 
 
          //look for just steam id 64, 76561197973578969
@@ -400,10 +411,8 @@ class SteamIDConvert
             $steamID64 = $steamiduser;
             $steam_link = $this->getSteamLink($steamID64);
             $steamid = $this->IDfrom64($steamID64);
-            $SteamQuery = new SteamQuery;
             $Query = $SteamQuery->GetPlayerSummaries($steamID64);
-            $test = $Query->response->players;
-                if (empty($test)){
+                if (empty($Query->response->players[0])){
                     return false;
                 }else{
                     $steamArray = array('steamid'=>$steamid, 'steamID64' =>$steamID64, 'steam_link'=>$steam_link);
@@ -411,6 +420,9 @@ class SteamIDConvert
                 }
         }else{
 
+            if (preg_match('#^http(s)?://#', $steamiduser)) {
+                $steamiduser = preg_replace('#^http(s)?://#', '', $steamiduser);
+            }
 
             //Look for characters
             if (preg_match("/^[a-z]/i", $steamiduser)) {
@@ -428,7 +440,11 @@ class SteamIDConvert
                         $steam_link = $this->getSteamLink($steamID64);
                         $steam_id=$this->IDfrom64($steamID64);
                         $steamArray = array('steamid'=>$steam_id, 'steamID64' =>$steamID64, 'steam_link'=>$steam_link);
-                        return $steamArray;
+                       if ($SteamQuery->GetPlayerSummaries($steamArray['steamID64'])) {
+                            return $steamArray;
+                        }else{
+                            return false;
+                        }
 
                     } elseif (preg_match("/(\/id\/)+/i",$steamiduser)) {
 
@@ -436,22 +452,26 @@ class SteamIDConvert
                         $i = preg_split("/\//i", $steamiduser);
                         $size = count($i) - 1;
                         $SteamQuery = new SteamQuery;
-                        $steamID64 = $SteamQuery->ConvertVanityURL($i[$size]);
+                        if(!$steamID64 = $SteamQuery->ConvertVanityURL($i[$size])){
+                            return false;
+                        }
                         $steamid = $this->IDfrom64($steamID64);
                         $steam_link = $this->getSteamLink($steamID64);
                         $steamArray = array('steamid'=>$steamid, 'steamID64' =>$steamID64, 'steam_link'=>$steam_link);
-
-                        
-                        
-                        return $steamArray;
-
+                       if ($SteamQuery->GetPlayerSummaries($steamArray['steamID64'])) {
+                            return $steamArray;
+                        }else{
+                            return false;
+                        }
                     } else {
                         return false;
                     }
                 }else{
                     //check if its just vanity url, nineteeneleven
                     $SteamQuery = new SteamQuery;
-                    $steamID64 = $SteamQuery->ConvertVanityURL($steamiduser);
+                    if(!$steamID64 = $SteamQuery->ConvertVanityURL($steamiduser)){
+                        return false;
+                    }
                     $steamid = $this->IDfrom64($steamID64);
                     $steam_link = $this->getSteamLink($steamID64);
                         if ($steamid=="STEAM_0:0:0") {
