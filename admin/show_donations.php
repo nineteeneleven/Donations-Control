@@ -12,13 +12,21 @@ define('adminPage', TRUE);
 require_once '../includes/config.php';
 require_once '../includes/class_lib.php';
 require_once '../scripts/rcon_code.php';
-$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
-$log = new log;
 $language = new language;
-$lang = $language->getLang(DEFAULT_LANGUAGE);
-// if (isset($)) {
-// 	# code...
-// }
+$log = new log;
+$mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB)or die($log->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: " . __LINE__));
+
+if (isset($_POST['langSelect'])) {
+    $_SESSION['language'] = $_POST['langSelect'];
+}
+
+if (isset($_SESSION['language'])) {
+ 	$lang = $language->getLang($_SESSION['language']);
+ }else{
+    $lang = $language->getLang(DEFAULT_LANGUAGE);
+}
+
+
 echo '<html>';
 echo '<meta http-equiv="Content-Type"content="text/html;charset=UTF8">';
 echo '<head>';
@@ -33,6 +41,11 @@ echo'<script>
 		 	$(this).fadeOut();
 		 })
 	});
+
+    function change(){
+        document.getElementById("langSelect").submit();
+    }
+
 </script>';
 echo '<title>Donor List</title>';
 echo '</head>';
@@ -47,6 +60,22 @@ echo '<li><a href="show_donations.php?error_log" id="errorLog">'.$lang->admin[0]
 echo '<li><a href="show_donations.php?logout" id="logout">'.$lang->admin[0]->logout .'</a></li>';
 echo '</ul>';
 echo '</nav>';
+echo "<title>". $lang->donate[0]->msg1 ."</title>";
+
+echo '<form id="langSelect" method="post">Change Language:
+<select name = "langSelect" onchange="change()">';
+    $langList = $language->listLang();
+    foreach ($langList as $list) {
+        if ($list == $lang->language) {
+           printf('<option value="%s" selected>%s</option>',$list,$availableLanguages[$list]);
+        }else{
+            printf('<option value="%s">%s</option>',$list,$availableLanguages[$list]);
+        }
+       
+    }
+    unset($i);
+echo'</select>
+</form>';    
 if (isset($_GET['logout'])) {
 
 	require_once 'pages/logout.php';

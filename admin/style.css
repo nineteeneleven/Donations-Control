@@ -152,7 +152,8 @@ input[type=button]:hover{font-size:150%;
 nav ul{
 margin-left: auto;
 margin-right: auto;
-padding-top: 30px;}
+padding-top: 30px;
+list-style-type: none;}
 nav ul li{
 	display: inline-block;
 }
@@ -201,5 +202,16 @@ nav ul li a:hover{
 	padding: 10px;
 	background-color: white;
 	border:3px solid black;
+	border-radius: 10px;
+}
+#langSelect{
+	position: relative;
+	z-index: 99;
+	float: right;
+	top: -40px;
+	padding:5px;
+	margin-right: 20px;
+	background-color: white;
+	border: 3px solid black;
 	border-radius: 10px;
 }
