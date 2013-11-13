@@ -1,5 +1,6 @@
 {
 	"checker" : "http://jsonlint.com/",
+	"language" : "en-us",
 	"steamdown": [
 		{
 			"msg1": "The Steam Community is currently down",

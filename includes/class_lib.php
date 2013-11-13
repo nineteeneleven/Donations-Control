@@ -16,6 +16,17 @@ class language{
         return json_decode($json);
     }
 
+    public function listLang(){
+        $scan = scandir($this->dir);
+        $i = 0;
+        foreach ($scan as $lang) {
+            if (!is_dir($lang)) {
+                $list[$i] = str_replace(".json", "", $lang);
+            }
+            $i++;
+        }
+        return $list;
+    }
 
 }
 

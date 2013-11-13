@@ -3,11 +3,17 @@ define('NineteenEleven', TRUE);
 require_once'includes/config.php';
 require_once 'includes/class_lib.php';
 $language = new language;
-$lang = $language->getLang(DEFAULT_LANGUAGE);
 $mysqliD = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB);
 $tools = new tools;
 $ConvertID = new SteamIDConvert;
 $steamid_user =$tools->cleanInput($_REQUEST['steamid_user']);
+
+if (isset($_POST['langSelect'])) {
+    $lang = $language->getLang($_POST['langSelect']);
+}else{
+    $lang = $language->getLang(DEFAULT_LANGUAGE);
+}
+
 
 if(TIERED_DONOR){
      $tier = $tools->cleanInput($_REQUEST['tier']);
@@ -107,6 +113,11 @@ echo'
 <meta http-equiv="Content-Type"content="text/html;charset=UTF8">
 <head>
     <script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>
+    <script>
+    function change(){
+        document.getElementById("langSelect").submit();
+    }
+    </script>
     <style type="text/css">
         body{background-color: gray;}
         .content{ width: 50%;
@@ -131,11 +142,36 @@ echo'
             background-color: rgba(15, 17, 14, 0.4);
             border:2px solid black;
             border-radius: 10px;}
+        #langSelect{
+            position:relative;
+            z-index:99;
+            float:right;
+        }
     </style>
 </head>
     <body>';
+
+
     echo "<title>". $lang->donate[0]->msg1 ."</title>";
     echo '<div class="content"><center>';
+    echo '<form id="langSelect" method="post">Change Language:
+    <select name = "langSelect" onchange="change()">';
+        $langList = $language->listLang();
+        foreach ($langList as $list) {
+            if ($list == $lang->language) {
+               printf('<option value="%s" selected>%s</option>',$list,$availableLanguages[$list]);
+            }else{
+                printf('<option value="%s">%s</option>',$list,$availableLanguages[$list]);
+            }
+           
+        }
+        unset($i);
+        printf("<input type='hidden' name='steamid_user' value='%s'><input type='hidden' name='amount' value='%s'>",$userInfo['steamid'],$amount);
+    if (TIERED_DONOR) {
+        printf("<input type='hidden' name='tier' value='%s'>",$tier);
+    }
+    echo'</select>
+    </form>';    
             if($return_donor===true){
                 printf("<p id='welcome_back'>" . $lang->donate[0]->msg2 ." ". date('l F j Y',$expiration_date) ."</p>" , $username);
             } 

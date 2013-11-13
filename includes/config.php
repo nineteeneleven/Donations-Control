@@ -104,6 +104,7 @@ date_default_timezone_set('America/New_York'); //http://php.net/manual/en/timezo
 define('cache_time', '15'); //days to resolve cache for information from steam, mainly the avatar image, and display name.
 define('PLAYER_TRACKER', true); //use player tracker to automatically fetch steam ids?
 define("DEFAULT_LANGUAGE", "en-us"); // name of file in translation folder. dont add .json
+$availableLanguages = array('en-us' =>'English' , '1337' =>'1337 5pEek' ); //set friendly display names here
 define('API_KEY' , 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
 define("STATS", true);
 ////////////////////////
