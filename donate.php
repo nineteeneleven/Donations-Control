@@ -151,7 +151,6 @@ echo'
 </head>
     <body>';
 
-
     echo "<title>". $lang->donate[0]->msg1 ."</title>";
     echo '<div class="content"><center>';
     echo '<form id="langSelect" method="post">Change Language:
@@ -188,7 +187,7 @@ echo'
         }            
 	            echo "<h1>".$lang->donate[0]->msg4."</h1><br/ >";
 	            echo "<img src='{$avatarfull}' /><br /> <h1>  <a href='{$steam_link}' target='_blank'>{$username}</a><h1><hr /><h3>";
-                printf("<p>". $lang->donate[0]->msg5, "5" ,"31");
+                printf("<p>". $lang->donate[0]->msg5, $amount , $days_purchased);
                 if(TIERED_DONOR){
                     if ($tier=="1") {
                         printf(" ". $lang->donate[0]->msg6." ",$group1['name']. "</p>");
