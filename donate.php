@@ -44,12 +44,12 @@ if($cacheQuery->num_rows > 0) {
 function cantFindUser(){
     global $tools, $lang;
     if (!$tools->checkOnline('steamcommunity.com')) {
-        die("<h3>". $lang->steamdown[0]->msg1.
+        die("<meta http-equiv='Content-Type'content='text/html;charset=UTF8'><h3>". $lang->steamdown[0]->msg1.
         "<br />".$lang->steamdown[0]->msg2.
         "<br />".$lang->steamdown[0]->msg3.
         "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
     }else{
-    die("<h3>".$lang->steamdown[0]->msg4.
+    die("<meta http-equiv='Content-Type'content='text/html;charset=UTF8'><h3>".$lang->steamdown[0]->msg4.
         "<br />". $lang->steamdown[0]->msg5.
         "<br />".$lang->steamdown[0]->msg6.
         "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
