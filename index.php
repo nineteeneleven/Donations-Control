@@ -13,7 +13,7 @@ if (PLAYER_TRACKER) {
     $ConvertID = new SteamIDConvert;
     $userip = $_SERVER['REMOTE_ADDR'];
 
-    $result = $mysqliD->query("SELECT * FROM `player_tracker` WHERE playerip='". $userip . "';")or die("Failed to connect to donations database");
+    $result = $mysqliD->query("SELECT * FROM `player_analytics` WHERE ip='". $userip . "';")or die("Failed to connect to donations database");
 
     function getXML($steam_link_xml, $steamid,$timestamp){
       $mysqliC = new mysqli(DB_HOST,DB_USER,DB_PASS,DONATIONS_DB);
@@ -56,8 +56,8 @@ if (PLAYER_TRACKER) {
 
           $row = $result->fetch_array(MYSQLI_ASSOC);
 
-              $playername = $row['playername'];
-              $steamid = $row['steamid'];
+              $playername = $row['name'];
+              $steamid = $row['auth'];
 
               $found_user = true;
 

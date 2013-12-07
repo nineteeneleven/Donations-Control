@@ -3,7 +3,7 @@
 *http://nineteeneleven.info
 *if you find this helpful please consider donating.
 *
-*Instruction manual provided at http://nineteeneleven.info/dc_manual.html
+*
 *
 */
 if(!defined('NineteenEleven')){die('Direct access not premitted');}
@@ -102,11 +102,9 @@ $mail['donorMsg'] = 'Message to send to your donors';
 define('CCC', true); //https://forums.alliedmods.net/showpost.php?p=1738314&postcount=56#MySQLModule
 date_default_timezone_set('America/New_York'); //http://php.net/manual/en/timezones.php
 define('cache_time', '15'); //days to resolve cache for information from steam, mainly the avatar image, and display name.
-define('PLAYER_TRACKER', true); //use player tracker to automatically fetch steam ids?
-define("DEFAULT_LANGUAGE", "en-us"); // name of file in translation folder. dont add .json
-$availableLanguages = array('en-us' =>'English' , '1337' =>'1337 5pEek','pt-br' => 'Portuguese (Brazil)', 'es-mx' => 'Spanish (Mexico)'); //set friendly display names here http://msdn.microsoft.com/en-us/library/ms533052(vs.85).aspx
+define('PLAYER_TRACKER', true); //McKay Analytics plugin integration // https://forums.alliedmods.net/showthread.php?t=230832 tables must be in the donations database.
 define('API_KEY' , 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
-define("STATS", true);
+
 ////////////////////////
 //dont edit this stuff//
 ////////////////////////
@@ -121,5 +119,5 @@ define('SB_PASS', DB_PASS);
 }
 
 //Please consider donating before removing/changing the footer http://nineteeneleven.info
-$footer = "<div id='footer' style='background-color:black;border-radius:10px;padding:10px;margin:5px;color:white;position:fixed;bottom:0px;width:97%;z-index:99;'><a style='text-decoration:none;color:white;' href='http://nineteeneleven.info' target='_blank' onmouseover=\"this.style.backgroundColor='red'\" onmouseout=\"this.style.backgroundColor=''\">Donations Control 2.0.4 Powered by NineteenEleven</a></div>";
+$footer = "<div id='footer' style='background-color:black;border-radius:10px;padding:10px;margin:5px;color:white;position:fixed;bottom:0px;width:97%;z-index:99;'> Powered by <a href='http://nineteeneleven.info' target='_blank' onmouseover=\"this.style.backgroundColor='red'\" onmouseout=\"this.style.backgroundColor=''\">NineteenEleven</a></div>";
 ?>

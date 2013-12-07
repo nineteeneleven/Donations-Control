@@ -206,6 +206,16 @@ private function getGroup($tier){
 
 
 class tools{
+    
+    public function convertToHoursMins($time, $format = '%d:%d') {
+        settype($time, 'integer');
+        if ($time < 1) {
+            return;
+        }
+        $hours = floor($time/60);
+        $minutes = $time%60;
+        return sprintf($format, $hours, $minutes);
+    }    
     public function dollaBillz($data){
         if (strpos($data, "$") === 0) {
           return substr($data, 1);

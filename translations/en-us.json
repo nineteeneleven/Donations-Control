@@ -29,7 +29,9 @@
 			"msg6" : "on the %s level",
 			"msg7" : "Beginning on %s and ending on %s",
 			"msg8" : "Please select the colors and tag you would like to use for your in-game chat.",
-			"msg9" : "If this is you, and you agree please click below, to proceed with your donation, you will be redirected to PayPal to process your contribution."
+			"msg9" : "If this is you, and you agree please click below, to proceed with your donation, you will be redirected to PayPal to process your contribution.",
+			"upgrade" : "It appears you are trying to upgrade your perks from %s level to %s level. If this is your intent, your expiration date will be recalculated retroactively at the %s rate, otherwise please go back and try again.",
+			"downgrade" : "It appears you are trying to downgrade your perks from %s level to %s level. If this is your intent, your expiration date will be recalculated retroactively at the %s rate, otherwise please go back and try again."
 		}
 	],
 	"admin":[{

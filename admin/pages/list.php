@@ -73,7 +73,7 @@ if (!defined('NineteenEleven')) {
 		}
 	 
 		if (PLAYER_TRACKER) {
-	    $PTresult = $mysqliD->query("SELECT * FROM `player_tracker` WHERE steamid='". $db_field['steam_id'] . "';")or die($mysqliD->error . " " . $mysqliD->errno);
+	    $PTresult = $mysqliD->query("SELECT * FROM `player_analytics` WHERE auth='". $db_field['steam_id'] . "';")or die($mysqliD->error . " " . $mysqliD->errno);
 
 	        $tracker = $PTresult->fetch_array(MYSQLI_ASSOC);
 	   
@@ -101,7 +101,7 @@ if (!defined('NineteenEleven')) {
 		 if (PLAYER_TRACKER) {
 
 		echo "<td class='click'><div class='steamid'> " . $db_field['steam_id'] . "</div>"
-		." <div class='ptInfo' > <a href='http://www.geoiptool.com/en/?IP=".$tracker['playerip']."' target='blank'>".$tracker['playerip']."</a>" . "(".$tracker['geoipcountry'].")</div></td>";
+		." <div class='ptInfo' > <a href='http://www.geoiptool.com/en/?IP=".$tracker['ip']."' target='blank'>".$tracker['ip']."</a>" . "(".$tracker['country'].")</div></td>";
 		
 		}else{
 		echo "<td>" . $db_field['steam_id']. "</td> ";	

@@ -75,10 +75,10 @@ if (!$fp)
 
 
 
-        $cacheReturn=$mysqliD->query("SELECT * FROM `player_tracker` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
+        $cacheReturn=$mysqliD->query("SELECT * FROM `player_tracker` WHERE auth ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
         if($cacheReturn->num_rows > 0) {
             $cacheResult = $cacheReturn->fetch_array(MYSQLI_ASSOC);
-            $username = $cacheResult['playername'];
+            $username = $cacheResult['name'];
          fwrite($log, "grabbed player name from cache. \r\n");
         }else{
 
@@ -106,7 +106,7 @@ if (!$fp)
         if($result){
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $expDate = $row['expiration_date'];
-            $n= "+".$days_purchased . " days";
+            $n = "+".$days_purchased . " days";
             if ($row['activated']=="2") {
                 $expiration_date = $expire;
             }else{
