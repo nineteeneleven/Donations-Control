@@ -14,26 +14,9 @@ if (isset($_POST['langSelect'])) {
     $lang = $language->getLang(DEFAULT_LANGUAGE);
 }
 
-function cantFindUser(){
-    global $tools, $lang;
-    if (!$tools->checkOnline('steamcommunity.com')) {
-        die("<meta http-equiv='Content-Type'content='text/html;charset=UTF8'><h3>". $lang->steamdown[0]->msg1.
-        "<br />".$lang->steamdown[0]->msg2.
-        "<br />".$lang->steamdown[0]->msg3.
-        "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
-    }else{
-    die("<meta http-equiv='Content-Type'content='text/html;charset=UTF8'><h3>".$lang->steamdown[0]->msg4.
-        "<br />". $lang->steamdown[0]->msg5.
-        "<br />".$lang->steamdown[0]->msg6.
-        "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
-    }
-}
 
 if(TIERED_DONOR){
      $tier = $tools->cleanInput($_REQUEST['tier']);
-     // if ($tier != "1" || $tier != "2") {
-     //     die("h4x");
-     // }
 }
  
 $useCache = false;
@@ -57,25 +40,21 @@ if($cacheQuery->num_rows > 0) {
     $steam_link = $userInfo['steam_link'];
 }
 
-//check if current donor
-if($result = $mysqliD->query("SELECT renewal_date,sign_up_date,expiration_date,tier,activated FROM donors WHERE steam_id = '".$userInfo['steamid']."';")){
-    if($result->num_rows > 0){
-        $row = $result->fetch_array(MYSQLI_ASSOC);
-        $expiration_date = $row['expiration_date'];
-        $currentExpirationDate = $expiration_date;
-        $currentTier = $row['tier'];
-        $currentRenewalDate = $row['renewal_date'];
-        $currentSignUpDate = $row['sign_up_date'];
-        $active = $row['activated'];
+
+function cantFindUser(){
+    global $tools, $lang;
+    if (!$tools->checkOnline('steamcommunity.com')) {
+        die("<h3>". $lang->steamdown[0]->msg1.
+        "<br />".$lang->steamdown[0]->msg2.
+        "<br />".$lang->steamdown[0]->msg3.
+        "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
+    }else{
+    die("<h3>".$lang->steamdown[0]->msg4.
+        "<br />". $lang->steamdown[0]->msg5.
+        "<br />".$lang->steamdown[0]->msg6.
+        "<br /><a href='javascript:history.go(-1);'>".$lang->misc[0]->msg1."</a></h3>");
     }
 }
- if (isset($expiration_date)) {
-    $return_donor = true;
-} else{
-    $return_donor = false;
-}
-
-
 ///////////////////////
 $amount = $tools->cleanInput($_REQUEST['amount']);
 if (strpos($amount, "$") === 0) {
@@ -87,79 +66,23 @@ if ($amount < "5") {
 }else{
     $amountSmall = false;
 }
- 
+
 $amount = round($amount);
 
 $sign_up_date = date('U');
 
-
 if (TIERED_DONOR) {
-
-    $big = max($group1['multiplier'], $group2['multiplier']);
-    $small = min($group1['multiplier'], $group2['multiplier']);
-    
-
-    if($currentTier == '1' && $currentTier != $tier && $return_donor && $active == '1'){
-        $diff = $big / $small;
-
-        //upgrading from tier1 to tier2
-        if ($currentRenewalDate > 0) {
-            //user never renewed
-            $d = $currentRenewalDate;
-        }else{
-            //use sign update instead
-            $d = $currentSignUpDate;
-        }
-
-            $dayDiff = round( ($currentExpirationDate - $d)/ $diff );
-
-
-            echo $dayDiff;
-            $currentSignUpDate = $currentSignUpDate - $dayDiff;
-            $currentRenewalDate = $currentRenewalDate - $dayDiff;
-        
-
-    }elseif($currentTier == '2' && $currentTier != $tier && $return_donor && $active == '1'){
-        $diff = $small / $big;
-
-        //upgrading from tier1 to tier2
-        if ($currentRenewalDate > 0) {
-            //user never renewed
-            $d = $currentRenewalDate;
-        }else{
-            //use sign update instead
-            $d = $currentSignUpDate;
-        }
-
-            $dayDiff = round( ($currentExpirationDate - $d) / $diff );
-            echo $dayDiff;
-            $currentSignUpDate = $currentSignUpDate + $dayDiff;
-            $currentRenewalDate = $currentRenewalDate + $dayDiff;
-        
-
-
-    }
-
     if ($tier == "1") {
         $days_purchased = round(($amount * $group1['multiplier']));
     }else{
         $days_purchased = round(($amount * $group2['multiplier']));
     }
-    unset($d);
 }else{
     $days_purchased = round(($amount * $group1['multiplier']));
 }
 
-
 $n= "+".$days_purchased . " days";
-if ($return_donor && !empty($currentRenewalDate) && $active == '1') {
-    $expire = strtotime($n,$currentRenewalDate);
-}elseif($return_donor && $active == '1'){
-    $expire = strtotime($n,$currentSignUpDate);
-}else{
-    $expire = strtotime($n,$sign_up_date);
-}
-
+$expire = strtotime($n,$sign_up_date);
 unset($n);
 
 if(!$useCache){
@@ -172,8 +95,18 @@ if(!$useCache){
     }
 }
 $username = $tools->cleanUser($username);
-
-
+//check if current donor
+if($result = $mysqliD->query("SELECT expiration_date FROM donors WHERE steam_id = '".$userInfo['steamid']."';")){
+    if($result->num_rows > 0){
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $expiration_date = $row['expiration_date'];
+    }
+}
+ if (isset($expiration_date)) {
+    $return_donor = true;
+} else{
+    $return_donor = false;
+}
 $mysqliD->close();
 echo'
 <html>
@@ -217,7 +150,7 @@ echo'
     </style>
 </head>
     <body>';
- 
+
     echo "<title>". $lang->donate[0]->msg1 ."</title>";
     echo '<div class="content"><center>';
     echo '<form id="langSelect" method="post">Change Language:
@@ -240,11 +173,6 @@ echo'
     </form>';    
             if($return_donor===true){
                 printf("<p id='welcome_back'>" . $lang->donate[0]->msg2 ." ". date('l F j Y',$expiration_date) ."</p>" , $username);
-                if (TIERED_DONOR && $currentTier == '1' && $currentTier != $tier) {
-                    printf("<p class='upgrade'>".$lang->donate[0]->upgrade."</p>", $group1['name'] , $group2['name'],$group2['name']);
-                }elseif (TIERED_DONOR && $currentTier == '2' && $currentTier != $tier) {
-                    printf("<p class='upgrade'>".$lang->donate[0]->downgrade."</p>", $group2['name'] , $group1['name'],$group1['name']);
-                }
             } 
                 echo "<br />";
                 if ($amountSmall) {
