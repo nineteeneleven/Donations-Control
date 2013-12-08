@@ -75,7 +75,7 @@ if (!$fp)
 
 
 
-        $cacheReturn=$mysqliD->query("SELECT * FROM `player_tracker` WHERE auth ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
+        $cacheReturn=$mysqliD->query("SELECT * FROM `player_analytics` WHERE auth ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
         if($cacheReturn->num_rows > 0) {
             $cacheResult = $cacheReturn->fetch_array(MYSQLI_ASSOC);
             $username = $cacheResult['name'];
