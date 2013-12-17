@@ -17,7 +17,7 @@ if (isset($_POST['COMMAND'])) {
 	if (STATS) {
 		@$log->stats("SQ");
 	}
-	$log->logAction(sprintf($lang->sysmsg[0]->nuclear, $_SESSION['username'], $query));
+	$log->logAction(sprintf($lang->logmsg[0]->nuclear, $_SESSION['username'], $query));
 
 	unset($sb);
 }else{
