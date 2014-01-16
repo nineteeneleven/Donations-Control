@@ -104,7 +104,9 @@ date_default_timezone_set('America/New_York'); //http://php.net/manual/en/timezo
 define('cache_time', '15'); //days to resolve cache for information from steam, mainly the avatar image, and display name.
 define('PLAYER_TRACKER', true); //McKay Analytics plugin integration // https://forums.alliedmods.net/showthread.php?t=230832 tables must be in the donations database.
 define('API_KEY' , 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
-
+define("DEFAULT_LANGUAGE", "en-us"); // name of file in translation folder. dont add .json
+$availableLanguages = array('en-us' =>'English' , '1337' =>'1337 5pEek','pt-br' => 'Portuguese (Brazil)', 'es-mx' => 'Spanish (Mexico)'); //set friendly display names here http://msdn.microsoft.com/en-us/library/ms533052(vs.85).aspx
+define("STATS", false); //enable stats reporting
 ////////////////////////
 //dont edit this stuff//
 ////////////////////////
