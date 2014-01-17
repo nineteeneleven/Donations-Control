@@ -77,12 +77,7 @@ if (!$fp)
     
 
 
-<<<<<<< HEAD
  $cacheReturn=$mysqliD->query("SELECT * FROM `cache` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
-=======
-
-        $cacheReturn=$mysqliD->query("SELECT * FROM `cache` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
->>>>>>> 77d71949af5cf7013ecec30769e872857f310bef
         if($cacheReturn->num_rows > 0) {
             $cacheResult = $cacheReturn->fetch_array(MYSQLI_ASSOC);
             $username = $cacheResult['personaname'];
