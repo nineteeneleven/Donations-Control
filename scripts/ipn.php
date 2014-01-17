@@ -35,10 +35,8 @@ if (!$fp)
 
         $userInfo = explode("?", $_POST['custom']);
         $steamid_user = $userInfo[0];
-        $amount = $userInfo[1];
-        $sign_up_date = $userInfo[2];
-        $expire = $userInfo[3];
-        $days_purchased = $userInfo[4];
+        $amount = $_POST['mc_gross'];
+        $sign_up_date = date('U');
         if (TIERED_DONOR) {
            $tier = $userInfo[5];
            if ($tier=="1") {
@@ -46,11 +44,13 @@ if (!$fp)
                 $group_id = $group1['group_id'];
                 $srv_group_id = $group1['srv_group_id'];
                 $server_id = $group1['server_id'];
+                $days_purchased = round(($amount * $group1['multiplier']));
            }else{
                 $srv_group = $group2['name'];
                 $group_id = $group2['group_id'];
                 $srv_group_id = $group2['srv_group_id'];
                 $server_id = $group2['server_id'];
+                $days_purchased = round(($amount * $group2['multiplier']));
                 if (CCC) {
                     $nameColor = str_replace("#", "", $_POST['option_name1']);
                     $chatColor = str_replace("#", "", $_POST['option_name2']);                   
@@ -63,7 +63,10 @@ if (!$fp)
             $srv_group_id = $group1['srv_group_id'];
             $server_id = $group1['server_id'];
             $tier = '1';
+            $days_purchased = round(($amount * $group1['multiplier']));
         }
+        $n= "+".$days_purchased . " days";
+        $expire = strtotime($n,$sign_up_date);
         $email = $_POST['payer_email'];
         $txn_id = $_POST['txn_id'];
         $steamArray= $ConvertID->SteamIDCheck($steamid_user);
@@ -74,8 +77,12 @@ if (!$fp)
     
 
 
+<<<<<<< HEAD
+ $cacheReturn=$mysqliD->query("SELECT * FROM `cache` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
+=======
 
         $cacheReturn=$mysqliD->query("SELECT * FROM `cache` WHERE steamid ='" . $steamid_user ."';")or die($sysLog->logError($mysqliD->error . " " . $mysqliD->errno ." Line Number: ". __LINE__));
+>>>>>>> 77d71949af5cf7013ecec30769e872857f310bef
         if($cacheReturn->num_rows > 0) {
             $cacheResult = $cacheReturn->fetch_array(MYSQLI_ASSOC);
             $username = $cacheResult['personaname'];
