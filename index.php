@@ -25,6 +25,7 @@ if (PLAYER_TRACKER) {
             $avatarmedium = $xml->players->player->avatarmedium;
             $avatarfull = $xml->players->player->avatarfull;
             $personaname =$xml->players->player->personaname;
+            $personaname = $mysqliC->escape_string($personaname);
             $steamid64 = $xml->players->player->steamid;
             $steam_link = $xml->players->player->profileurl;
             //update cache database
